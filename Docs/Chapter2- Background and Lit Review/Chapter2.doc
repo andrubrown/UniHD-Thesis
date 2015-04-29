@@ -1,0 +1,30 @@
+﻿Background
+
+Other Fundamentatl Knowledge
+Machine Learning
+	Supervised 
+	Unsupervised
+clustering
+	What is clustering
+	Types of Clustering
+		Partioning
+			Kmeans
+		Hiearchical
+			Other
+Decomposition Methods
+	PCA
+	Sparse Coding
+	Matrix Factorization
+	SVD
+Image Processing and Pattern Recognition
+	Image Representation
+	Vector Form of the Image
+Preprocessing Methods
+	Scaling
+	Normaliztion
+	L1 L2 norm
+	CLAHE
+Error Measures
+	AUC, ROC
+	FP TP FN F1 Acc 
+Dimesnsionality Reduction
