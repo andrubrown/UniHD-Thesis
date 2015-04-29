@@ -1,0 +1,19 @@
+﻿Chapter 3 – Clustering Based
+
+What is the methods
+	Here we describe the algorithm, first patching the data, 
+	the random selection of patches, finding clusters of the patches
+	Mapping clusters to GT
+	For new sample → Nearest Cluster, replace by GT cluster
+	Repatch to get the image
+
+Define the algorithm
+How the data is generated
+Show the clusters formed
+	Clusters
+Preprocessing Steps
+Results
+
+1) No of clusters
+2) Sample Size
+3) ??

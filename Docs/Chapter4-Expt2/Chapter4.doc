@@ -1,0 +1,17 @@
+﻿Model 2 – Dictionary Learning Based
+
+Decompostion based methods
+Basis vectors learnt
+Sparse Coding
+How it is helpful ( might go into discussions and introduction )
+Shortcomings of the model
+Multi Scale approach
+
+Algorithm
+	- Matrix Decompostion
+	- Overcomplete basis
+	- Mapping to get the GT
+	- Mean Removal
+	- Enhancement
+
+
