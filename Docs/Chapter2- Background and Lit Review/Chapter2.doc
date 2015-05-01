@@ -1,6 +1,6 @@
 ﻿Background
 
-Other Fundamentatl Knowledge
+Other Fundamental Knowledge
 Machine Learning
 	Supervised 
 	Unsupervised
@@ -28,3 +28,17 @@ Error Measures
 	AUC, ROC
 	FP TP FN F1 Acc 
 Dimesnsionality Reduction
+What is Machine Learning ?
+
+The study dealing with the process of learning characterstic information from data is called Machine Learning. Give some data, X , a machine learning algorithm would learn a mapping function f(X) → y. The learnt model than can be used to make predictions on previously unseen data X'. The aim of the machine learning algorithm is to learn a generalized model, to make the best possible predictions on the unseen data.
+
+
+
+Depending on whether the data is labelled or unlabelled, the machine learning algorithms can be divided into two types namely :
+	* Supervised Learning Algorithms
+	* Unsupervised Learning Algorithms
+
+
+Supervised Learning Algorithms
+
+
