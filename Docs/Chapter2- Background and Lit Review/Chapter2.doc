@@ -1,4 +1,5 @@
-﻿Background
+﻿S
+Background
 
 Other Fundamental Knowledge
 Machine Learning
@@ -28,9 +29,13 @@ Error Measures
 	AUC, ROC
 	FP TP FN F1 Acc 
 Dimesnsionality Reduction
+
+
 What is Machine Learning ?
 
-The study dealing with the process of learning characterstic information from data is called Machine Learning. Give some data, X , a machine learning algorithm would learn a mapping function f(X) → y. The learnt model than can be used to make predictions on previously unseen data X'. The aim of the machine learning algorithm is to learn a generalized model, to make the best possible predictions on the unseen data.
+The study dealing with the process of learning characterstic information from data is called Machine Learning. Give some data, X , a machine learning algorithm would learn a mapping function f(X) → y. The learnt model than can be used to make predictions on previously unseen data X'. The aim of the machine learning algorithm is to learn a generalized model, to make the best possible predictions on the new previously unseen data.
+
+A machine learning algorithm comprises of a training and a prediction step. During the training phase, the algorithm is fed with data points (known as training observations/instances). Each training instance is described by a number of features in form of a feature descriptor. A feature set can learned or computed to describe/represent each instance. Based on whether the training data has the ground truth label associated with it or not, the machine learning algorithms can be divided into two types
 
 
 
@@ -41,4 +46,15 @@ Depending on whether the data is labelled or unlabelled, the machine learning al
 
 Supervised Learning Algorithms
 
+Give a training set of labelled data, superivsed learning algorithims fit a model to the training set with the aim of predciting the unknown labels for the test instances ( observations). During the training phase, the algorithms learns the unkown parameters for the model.
+[Describe the process]
+[Example of a learning algorithm]
+
+
+Unsupervised Learning Algorithms
+
+In an unsupervised learning settings, the task is to find group relations between instances of the unlabelled training dataset with a subsequent aim of categorizing or clustering the data. The algorithms aims to understand the general properies/structure in the dataset.
+[Explain the method]
+
+Clustering
 
