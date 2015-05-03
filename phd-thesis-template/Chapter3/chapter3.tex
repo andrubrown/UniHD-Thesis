@@ -1,4 +1,4 @@
-\chapter{My third chapter}
+\chapter{Framework}
 
 % **************************** Define Graphics Path **************************
 \ifpdf
@@ -6,124 +6,71 @@
 \else
     \graphicspath{{Chapter3/Figs/Vector/}{Chapter3/Figs/}}
 \fi
+The chapter aims to present the basic framework for our vessel segmentation algorithm.
+The chapter is divided into 4 parts. In the first part we discuss the basic framework of our algorithm. Part 2 and Part3 talk about the various preprocessing methods and how the methods was applied to our problem.
+\section{Vessel segmentation Framework}
+The image segmentation framework takes as its input a list of fundus images  $$I = /{I_1, I_2....., I_n /}$$  and their correspoding ground truth segmentation maps  $$S = /{S_1, S_2....., S_n/} $$. The input fundus images $$I_j$$ can be grayscale or RGB color images. Each of the given segmentaion maps in S, is the same size as that of correspoding fundus image in I. The ground truth segmentation maps are binary image i.e, each pixel in the segmentation map is either 1 or a 0, deptcting the presenece of vessel or background respectively
 
-\section{First section of the third chapter}
-And now I begin my third chapter here \dots
+Given a training dataset consisting of fundus images $ I $ and segmentation maps $ S $, the aim is to define a framework, to predict the segmentation map $S'$ for an unknown new image $I'$.
 
-And now to cite some more people~\citet{Rea85,Ancey1996}
+The proposed problem is dealt in a patch based framework. Each image pixel in the image is represented by a patch centered around the pixel. The image is decomposed into such dense patches.
 
-\subsection{First subsection in the first section}
-\dots and some more 
+Given an Image pixel I(x,y) we compute a patch of size k x k around the pixel I(x,y). Each image is then described by such patches.
 
-\subsection{Second subsection in the first section}
-\dots and some more \dots
+Patches are computed both for the Fundus images and their corresoponding binary segmentation map images. For an Image I, and its segmentation map S, the patches our denoted by 
+$$I ~ [Ip_1,Ip_2 …] $$ and $$S ~ [Sp_1,Sp_2,....] $$
 
-\subsubsection{First subsub section in the second subsection}
-\dots and some more in the first subsub section otherwise it all looks the same
-doesn't it? well we can add some text to it \dots
+The aim of our thesis is to develop algorithms which predict the Segmentation patch for a given image patch.
 
-\subsection{Third subsection in the first section}
-\dots and some more \dots
+During the training process, the algorithms aim to learn a set of image representation patches describing the patches from the training set.
 
-\subsubsection{First subsub section in the third subsection}
-\dots and some more in the first subsub section otherwise it all looks the same
-doesn't it? well we can add some text to it and some more and some more and
-some more and some more and some more and some more and some more \dots
+Give a training set consisting of image patches X={X1, X2, X3. … } and their corresponding ground truth patches Y = {Y1,Y2,Y3,...}, we aim to learn as set Xr = {Xr1,Xr2,.... } which can represent each and every patch of in the training images X.
 
-\subsubsection{Second subsub section in the third subsection}
-\dots and some more in the first subsub section otherwise it all looks the same
-doesn't it? well we can add some text to it \dots
+In the prediction phase, a single channel of the image is taken and dense patches (patches per pixel are calculated ) and fed to the classifier. The classifer predicts the GT patches for each image patch. The ground truth patches are the recombined to obtain the segmentation map for the image.
 
-\section{Second section of the third chapter}
-and here I write more \dots
+\subsection{Preprocessing}
+In our task we have explored some of the preprocessing steps including Patch Normalization, Contrast streteching, Local contrast nomralization.
 
-\section{The layout of formal tables}
-This section has been modified from ``Publication quality tables in \LaTeX*''
- by Simon Fear.
+All the input patches are normalizaed by subtracting the mean and standard deviation per patch. In addition to this we also test with normalizing the entire image before patch generation.
 
-The layout of a table has been established over centuries of experience and 
-should only be altered in extraordinary circumstances. 
+In some of the experiments, we improve the image contrast by utilizing Contrast Limited Adaptive Histogram Equalization (CLAHE) as explained in section{}.
 
-When formatting a table, remember two simple guidelines at all times:
+In our task we have explored some of the preprocessing steps including Patch Normalization, Contrast streteching, Local contrast nomralization.
 
-\begin{enumerate}
-  \item Never, ever use vertical rules (lines).
-  \item Never use double rules.
-\end{enumerate}
+All the input patches are normalizaed by subtracting the mean and standard deviation per patch. In addition to this we also test with normalizing the entire image before patch generation.
 
-These guidelines may seem extreme but I have
-never found a good argument in favour of breaking them. For
-example, if you feel that the information in the left half of
-a table is so different from that on the right that it needs
-to be separated by a vertical line, then you should use two
-tables instead. Not everyone follows the second guideline:
+In some of the experiments, we improve the image contrast by utilizing Contrast Limited Adaptive Histogram Equalization (CLAHE) as explained in section{}.
 
-There are three further guidelines worth mentioning here as they
-are generally not known outside the circle of professional
-typesetters and subeditors:
+Rotations
+To provide for rotational invariance and learn better representatives, rotated patches are also included in our learning phase. Each of the training images are additionaly rotated at angles of 30,60,90 and patches are calculated.
 
-\begin{enumerate}\setcounter{enumi}{2}
-  \item Put the units in the column heading (not in the body of
-          the table).
-  \item Always precede a decimal point by a digit; thus 0.1
-      {\em not} just .1.
-  \item Do not use `ditto' signs or any other such convention to
-      repeat a previous value. In many circumstances a blank
-      will serve just as well. If it won't, then repeat the value.
-\end{enumerate}
+\section{Datasets}
+For testing the performance of our algorithm , we train and test our system on the following publically available datasets. In this section we describe the characteristics of these datsets
 
-A frequently seen mistake is to use `\textbackslash begin\{center\}' \dots `\textbackslash end\{center\}' inside a figure or table environment. This center environment can cause additional vertical space. If you want to avoid that just use `\textbackslash centering'
+\subsection{DRIVE}
+The Digital Retinal Images for Vessel Extraction (DRIVE) dataset consists of 40 color retinal images randomly selected from diabetic retinopathy screening program for 400 diabetic patients.Each of these images in dataset are JPEG compressed and have a dimensions of 768 x 584 pixels captured at a resolution on bits per pixel. The images are captures with a 45degree field of view (FOV).
+Of the 40 images in the datset, 7 show sign of diabetic retinopathy , while the remaining 33 do not consist of any pathology. Each image is provided with a corresponding mask delineating the FOV.
 
+The dataset is divided is provided with divisions in terms of training and testing set, with each set consisting of 20 images. Each of the 40 images have been manually segmented by human observers trained by an experienced optamologist. For the training set, single ground truth segmentation of the vessels is provided. The test set is provided with two ground truth segmentations, of which the first one is used as gold standard and the other is used to compare the performance with an independent human observer.
 
-\begin{table}
-\caption{A badly formatted table}
-\centering
-\label{table:bad_table}
-\begin{tabular}{|l|c|c|c|c|}
-\hline 
-& \multicolumn{2}{c}{Species I} & \multicolumn{2}{c|}{Species II} \\ 
-\hline
-Dental measurement  & mean & SD  & mean & SD  \\ \hline 
-\hline
-I1MD & 6.23 & 0.91 & 5.2  & 0.7  \\
-\hline 
-I1LL & 7.48 & 0.56 & 8.7  & 0.71 \\
-\hline 
-I2MD & 3.99 & 0.63 & 4.22 & 0.54 \\
-\hline 
-I2LL & 6.81 & 0.02 & 6.66 & 0.01 \\
-\hline 
-CMD & 13.47 & 0.09 & 10.55 & 0.05 \\
-\hline 
-CBL & 11.88 & 0.05 & 13.11 & 0.04\\ 
-\hline 
-\end{tabular}
-\end{table}
+\subsection{STARE}
+The STARE dataset consists of 20 images with blood vessel segmentations, out of which 10 show signs of pathology. The images have been capture with a FOV of 35degrees at 8 bit per pixel resolution, with dimesnsions of each image as 605 x 700 pixels. The dataset consists of segmentation provided by two human observers. In our experiements, we consider the segmentations provided by the first observer as ground truth.
 
-\begin{table}
-\caption{A nice looking table}
-\centering
-\label{table:nice_table}
-\begin{tabular}{l c c c c}
-\hline 
-\multirow{2}{*}{Dental measurement} & \multicolumn{2}{c}{Species I} & \multicolumn{2}{c}{Species II} \\ 
-\cline{2-5}
-  & mean & SD  & mean & SD  \\ 
-\hline
-I1MD & 6.23 & 0.91 & 5.2  & 0.7  \\
+For the experiements, the dataset is randomly divided into training and test sets each consisting of 10images.
 
-I1LL & 7.48 & 0.56 & 8.7  & 0.71 \\
+\subsection{HRF}
+he High Resolution Fundus (HRF) image databse consists of 45 images of which 15 images come from healthy patients , 15 from patients with diabetic retinopathy and 15 of glacumatous patients.
 
-I2MD & 3.99 & 0.63 & 4.22 & 0.54 \\
+The images were captured with a FOV of 60degrees, at a high resolution of 24bits per pixel. The size of each image is 3504 x 2336 pixels and stored with JPEG compression. 
 
-I2LL & 6.81 & 0.02 & 6.66 & 0.01 \\
+Each image is provided a manual segmentation of vessesl as segmented by three independent human observers trained by experienced optahmologists.The dataset also provides a corresponging mask image of each image delineating the FOV.
 
-CMD & 13.47 & 0.09 & 10.55 & 0.05 \\
+\subsection{ARIA}
+The ARIA dataset consists of three groups of images. One of the group consists of 92 images with age-related macular degeneration, the other with 59 images from diabetic patients and the last group with 61 images from a control group.
+The images are captures with a 50degree FOV, stored in uncompressed TIFF format, with a resolution of 8bits oer pixel. Each image has dimensions of 768 x 576 pixels.
 
-CBL & 11.88 & 0.05 & 13.11 & 0.04\\ 
-\hline 
-\end{tabular}
-\end{table}
+The dataset provides with blood vessel segmentation images as manually segmented by experts and a corresponding mask delinating the FOV region.
+
 
 
 \begin{table}
