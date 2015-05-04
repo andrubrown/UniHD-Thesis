@@ -9,24 +9,38 @@
 The chapter aims to present the basic framework for our vessel segmentation algorithm.
 The chapter is divided into 4 parts. In the first part we discuss the basic framework of our algorithm. Part 2 and Part3 talk about the various preprocessing methods and how the methods was applied to our problem.
 \section{Vessel segmentation Framework}
-The image segmentation framework takes as its input a list of fundus images  $$I = /{I_1, I_2....., I_n /}$$  and their correspoding ground truth segmentation maps  $$S = /{S_1, S_2....., S_n/} $$. The input fundus images $$I_j$$ can be grayscale or RGB color images. Each of the given segmentaion maps in S, is the same size as that of correspoding fundus image in I. The ground truth segmentation maps are binary image i.e, each pixel in the segmentation map is either 1 or a 0, deptcting the presenece of vessel or background respectively
+The image segmentation framework takes as its input a list of fundus images, $I = (I^{(1)},I^{(2)}....., I^{(n)} )$  and their correspoding ground truth segmentation maps  $S = (S^{(1)},S^{(2)}....., S^{(n)} )$. The fundus images $I^n$ can be grayscale or RGB color images. For each n, $S^n$ ,the binary segmentation map is of the same size as of $I^n$. For a given fundus image, $I^n$, let $I^n(x,y)$ denote the pixel value at position (x,y) and $S^n(x,y)$ denotes the corresponding pixel in the segmentation map $S^n$. The pixels in segmentation map take either a value of 1 or 0 denoting the presenece or absence of vessel respectively.
 
-Given a training dataset consisting of fundus images $ I $ and segmentation maps $ S $, the aim is to define a framework, to predict the segmentation map $S'$ for an unknown new image $I'$.
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fundusimage}
+		\caption{Fundus Image}
+		\label{fig:fundusex}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fundusimageseg}
+		\caption{Segmented Vessels}
+		\label{fig:fundusex seg}
+	\end{subfigure}
+	\caption{Fundus Image and its segmentation}
+	\label{fig:fundus example}
+\end{figure}
 
-The proposed problem is dealt in a patch based framework. Each image pixel in the image is represented by a patch centered around the pixel. The image is decomposed into such dense patches.
 
-Given an Image pixel I(x,y) we compute a patch of size k x k around the pixel I(x,y). Each image is then described by such patches.
+For clarity and simplicity, the fundus images will be referred as I and the corresponding segmentation image as S. Fig~\ref{fig:fundus example} shows an example of fundust image on the left and the correspoding segmentation image on the right.
 
-Patches are computed both for the Fundus images and their corresoponding binary segmentation map images. For an Image I, and its segmentation map S, the patches our denoted by 
-$$I ~ [Ip_1,Ip_2 …] $$ and $$S ~ [Sp_1,Sp_2,....] $$
+In this thesis we aim to develop methods that use the training data I and S to learn a predictor that segments the vessels in new unseen fundus images.The proposed problem is solved in a patch based framework, in which we decompose each image into smaller images (called as patches) centered around each pixel of the original image. Thus a given fundus image I and segmentation map S can be represented in terms of their patches as 
+\begin{gather}
+I = \{ P^I_{x,y} \}  \\
+S = \{ P^S_{x,y} \} 
+\end{gather}
+where $P^I_{x,y}$ and $P^S_{x,y}$ represent a $w $ x $ w$ patch centered at pixel (x,y) of I and S respectively.
 
-The aim of our thesis is to develop algorithms which predict the Segmentation patch for a given image patch.
-
-During the training process, the algorithms aim to learn a set of image representation patches describing the patches from the training set.
-
-Give a training set consisting of image patches X={X1, X2, X3. … } and their corresponding ground truth patches Y = {Y1,Y2,Y3,...}, we aim to learn as set Xr = {Xr1,Xr2,.... } which can represent each and every patch of in the training images X.
-
-In the prediction phase, a single channel of the image is taken and dense patches (patches per pixel are calculated ) and fed to the classifier. The classifer predicts the GT patches for each image patch. The ground truth patches are the recombined to obtain the segmentation map for the image.
+The training set I \& S is composed of such small patches and a classifier is trained which learns a set of patches 
 
 \subsection{Preprocessing}
 In our task we have explored some of the preprocessing steps including Patch Normalization, Contrast streteching, Local contrast nomralization.

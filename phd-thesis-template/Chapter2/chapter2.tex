@@ -13,24 +13,23 @@
 This chapter aims to provide the basic background knowledge to understand the work of thesis. Clustering algortighm and Dictionary Learning algortihms are discusses. We further discuss the various evaluation measures.
 \section[Machine Learning]{Machine Learning}
 
-Machine learning is the study dealing with the process to learn characteristic information from data. Given some data, $ X $ , a machine learning algorithm learns a function $ f(x) $ which maps the input to an output variable $y$ . The learnt model than can be used to make predictions on previously unseen data $X'$. The aim of a machine learning algorithm is to learn a generalized model which can make the best possible prediction on the new previously unseen data.
+Machine learning is the study dealing with the process to learn characteristic information from data. Given some data, $ X $ , a machine learning algorithm learns a function $ f(X) $ which maps the input X to an output variable $y$ . The learnt model than can be used to make predictions on previously unseen data $X'$.A machine learning algorithm learns the parameters of an adpative model from a training set, typically optimizing a function. The learnt model is then used to make predictions on previously unseen new data. On the basis of presence or absence of label information in the dataset, the learning algorithms are categorized as supervised learning algorithms and unsuperverised learning algorithms respectively.
 
-To train the algorithm, it is fed with data points (known as training observations/instances). The data points in the set are each described by a set of features, know as feature vectors. These descriptors can be learned from the data or can be computed for each instance. As an example, supppose we have a set of patches from an image as our data points. Descritors denote the key properties of data points.
+In a supervised setting , given a set of labelled  data points known as the training data: $$ T = \{(x_1,y_1),...,(x_n,y_n)\} $$, where $x_i \in X$ and $x_i \in X$ ,we find a function f, which maps any point in the domain of X to its corresponding label in Y. If Y is a set of discrete values then the it is known as a classifcation problem and if Y is in a continous range then it is a problem of regression.
 
-Let $X =\{x_1,x_2,... x_n\} \in R^{m x n}$ be a set of images patches with dimesnsions ${m x n}$. The feature vector describing these data points can than be denoted as
+In an unsupervised setting, the task is to find group relations between instances of the unlabeled training dataset with a subsequent aim of categorizing or clustering the data. The algorithm finds the previous unknown structure in the data.
+
+The data point $x_i$ is typically represented as a vector comprising of feature values and is known as a feature vector. For example, given a dataset $X =\{x_1,x_2,...,x_m\}$ where $x_i$ is an image patch of size $p$ x $q$,each patch can be represented as a vector of length pq of grey scale intensity values at each pixel. The entire dataset then can be represented as a matrix:
 \begin{equation*}
 X = \begin{pmatrix}
-x_{1,1} & x_{1,2} & \cdots & x_{1,n} \\
-x_{2,1} & x_{2,2} & \cdots & x_{2,n} \\
+x_{1,1} & x_{1,2} & \cdots & x_{1,pq} \\
+x_{2,1} & x_{2,2} & \cdots & x_{2,pq} \\
 \vdots  & \vdots  & \ddots & \vdots  \\
-x_{m,1} & x_{m,2} & \cdots & x_{m,n}
+x_{m,1} & x_{m,2} & \cdots & x_{m,pq}
 \end{pmatrix}
 \end{equation*}
-Here each row of the matrix dentoes individual data points and ${x_{i,j}}$ are the gray scale intensities of each pixel of the given patch $x_i$.
 
-
-
-
+Here each row of the matrix dentoes individual data points and ${x_{i,j}}$ is the gray scale intensities of patch $x_i$ at pixel location j.
 
 Depending on whether the data is labelled or unlabelled, the machine learning algorithms can be divided into two types namely :
 \begin{enumerate}
@@ -38,44 +37,43 @@ Depending on whether the data is labelled or unlabelled, the machine learning al
 	\item Unsupervised Learning Algorithms
 \end{enumerate}
 
-\subsection{Supervised Learning}
-Give a training set of labelled data, supervised learning algorithims fit a model to the training set with the aim of predciting the unknown labels for the test instances ( observations). During the training phase, the algorithms learns the unkown parameters for the model.
-
-[Describe the process]
-
-[Example of a learning algorithm]
-
-\subsection{Unsupervised Learning}
-
-In unsupervised learning settings, the task is to find group relations between instances of the unlabeled training dataset with a subsequent aim of categorizing or clustering the data. The algorithm aims to understand the general properties/structure in the dataset.
-
-[Explain the method]
+%\subsection{Supervised Learning}
+%Give a training set of labelled data, supervised learning algorithims fit a model to the training set with the aim of predciting the unknown labels for the test instances ( observations). During the training phase, the algorithms learns the unkown parameters for the model.
+%
+%[Describe the process]
+%
+%[Example of a learning algorithm]
+%
+%\subsection{Unsupervised Learning}
+%
+%In unsupervised learning settings, the task is to find group relations between instances of the unlabeled training dataset with a subsequent aim of categorizing or clustering the data. The algorithm aims to understand the general properties/structure in the dataset.
+%
+%[Explain the method]
 
 \section{Clustering}
 A cluster is collection of data points grouped together on basis of some common properties.The data objects or points within a cluster are similar to each other, whereas the points in different groups are disimilar.
 
-The process of partioning of data points into smaller groups (called as clusters) with the aim to minimize the intra cluster variance and maximize the inter cluster variance. The grouping of data points is based on the similarity or disimilarity of the objects as described by their properties or features. Clustering data objects create subspaces within the data.
+The process of partioning the data points into smaller groups (called as clusters) with an aim to minimize the intra cluster variance and maximize the inter cluster variance, is known as clustering. The grouping of data points is based on the similarity or disimilarity of the objects as described by their properties or features.
 
-[For example, given a toy dataset with 10 data points]
+Similarity or disimilarity between two objects can be very subjective and hence various measures are used to describe them quantitatively with distance measure being the most common.The distance measure is used to specify the distance between two objects and can be used to create a distance matrix called as similarity/disimilarity matrix. The most commonly used distance metric is the Eucledian Distance.
 
+The eucledian distance D between two points $p =\{x_1, x_2, ... , x_n\}$ and $q =\{y_1, y_2, ... , y_n\}$ can be defined as:
+\begin{equation}
+\begin{split}
+dist(p,q) =  \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + ... +(x_n - y_n)^2 } \\
+		 =  \sqrt{\sum_{i=1}^{n}(p_i - q_i)^2} \\
+		 = \lVert \mathbf{p-q} \rVert
+\end{split}
+\end{equation}
 
-Similarity or disimilarity between two objectives can be very subjective and hence various measures are used to describe them quantitatively with distance measure being the most common.The distance measure is used to specify the distance between two objects and can be used to create a distance matrix called as similarity/disimilarity matrix. The most used distance metric is the Minkowski Distances.
-
-[Minkowski distances]
-
-As the data labels are unknown,cluster analysis is known as an unsupervised method of data partionining.This is contast to classification where the data can be partitioned on the basis of their class labels. Thus, clustering segments the data on the basis of the properties of the objects within the dataset and finds previously unkown grouping within the data.
-
-The distance based clustering algorithms can be divided into two types namely Partioning based and Hiearchical methods.
-
-We look into these different types of Clustering methods.
+As the data labels are unknown,cluster analysis is known as an unsupervised method of data partionining.This is contast to classification where the data can be partitioned on the basis of their class labels. Thus, clustering segments the data based on properties of the objects within the dataset and finds previously unkown grouping within the data.
 
 \subsection{K-Means Clustering}
 In this section we look into the K-Means clustering algorithm. We assume that the number of clusters 'K' is given and we use it to initiate our clustering algorirthm. 
 
 We are give a dataset D with n objects. Each n object in the dataset is described by a feature vector of length m. The feature vector can be anything which can represent the datapoint. For examples, for an image the feature vector can be grayscale values at every pixel. The aim of the clustering algorithm is to partition the the dataset D[m x n] into 'K' clusters while optimizing an objective function. The clusters are formed so as to the objects within the same cluster are similar and disimilar to objects in other clusters.
 
-
-K-Means is a centroid based partioning method I.e the centroid of the cluster is the representative data point for the cluster. The centorid of the cluster is defined by the mean of all the data points within the cluster.
+K-Means is a centroid based partioning method i.e the centroid of all the data points is the representative point for the cluster. Centroid is the mean value of all the data points withing the cluster.
 
 Give a dataset D with n objects in the Eucledian space, the aim is to partition the dataset into k cluster C1,C2...Ck susch that Ci subset of D and Ci Cj is nil. That is each point withing the dataset is exclusive to one cluster.
 Each of the clusters Ci is represented by its centroid ci. Each cluster is consists of p points and the distance between the point p and the cluster representative ci is defined as dist(p,ci). If the data points are in m dimensional , then the distance is defined as
@@ -90,12 +88,8 @@ Algorithm
 
 Algorithm
 
-\section{Decompostion Methods}
-
-\subsection{PCA}
-\subsection{Matrix Factorization}
-
 \section{Dictionary Learning}
+
 \subsection{Sparse Coding}
 
 \section{Preprocessing Methods}
