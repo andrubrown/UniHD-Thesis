@@ -67,9 +67,15 @@ At the test time, we compute the patches for a given image and the mapping fucnt
 \subsection{Learning Architecture}
 The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map. In both of our models we learn local structure representations in form of a dictionary. This dictionary is composed of patches representing the edge structures, t- junctions, crossovers, parallel lines and other commonly occuring local patterns. To these patches is associated their ground truth segmentations. At prediction time, we then approximately decompose each patch as a linear combinaton of dictionary elements.To compute the final segmentation of the patch, each atom of the dictionary element in the linear combination is replaced by its segmentation.\\
 
+An example of the learning model is shown in figure \ref{fig:trainmodel}
 Both of the models presented in the section, learn this dictionary for predicting the ground truth map.
 Before we delve into our models, we list the common pre processing operations on the input data.
- 
+ \begin{figure}
+ 	\centering	
+ 	\includegraphics[width=0.8\textwidth]{trainmodel.png}
+ 	\caption{Training architecture for our learning model.}
+ 	\label{fig:trainmodel}		
+ \end{figure}
 \subsubsection{Preprocessing}
 For our task we have explored some of the preprocessing steps including patch normalization, contrasts streching and local contrast normalization. For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
 
