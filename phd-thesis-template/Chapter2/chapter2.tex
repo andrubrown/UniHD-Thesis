@@ -62,7 +62,7 @@ dist(p,q) =  \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + ... +(x_n - y_n)^2 } \\
 
 As the data labels are unknown,cluster analysis is known as an unsupervised method of data partionining.This is in contast to classification where the data can be partitioned on the basis of their class labels. Thus, clustering segments the data based on properties of the objects within the dataset and finds previously unkown grouping within the data.
 
-\subsection{K-Means Clustering}
+\subsection{K-Means Clustering}\label{sec:kmeans}
 In this section we look into the K-Means clustering algorithm (\citet{macqueen1967some}). We assume that the number of clusters 'K' is given and we use it to initiate our clustering algorirthm. The idea is to partition the dataset into 'k' clusters and assign 'k' centorids , one for each cluster \\
 
 Given a datast D =$[x_1,x_2,...,x_n]$ consisting of n objects ,where each object is a feature vector of length 'm'.The clustering algorithm partitions the dataset into 'K' clusters $C_1,C_2...C_k$ such that $C_i$ $\subset$ D and $Ci \cap Cj = \emptyset$ and with an aim to have a low intra cluster varianace and a high inter cluster varianace.This means that the points within the same cluster musts be highly similar and disimilar to the points belogning to other clusters.\\
@@ -82,7 +82,7 @@ K-means clustering is the simplest unsupervised learning algorithm and can be ap
 	\label{fig:kmeansvisz}
 \end{figure}
 
-\section{Spare Coding and Dictionary Learning}
+\section{Spare Coding and Dictionary Learning}\label{sec:dlsparse}
 The process of learning a finite set of basis elements ,called atoms, from a given training set of signals $X=[x_1,x_2,...,x_n], $ such that each signal in X can be approximately reconstructed by a linear combiantion of atoms is called Dictionary Learning. This finite sets of atoms is called D, is the learnt dictionary. Normally we want to find a sparse decomposition of signals in D i.e, we aim to create a dictionary of sparse elements. This kind of decomposition is different from PCA where the basis elements have to be orthogonal to each other and these dictionaries are in general overcomplete.\\
 
 By overcomplete here we mean that if any element from the dictionary is removed, we can still approximately construct the signal from the atoms. Also the number of atoms in dictionary is of a greater dimension than the data. \citet{lewicki2000learning} describes the process of learning overcomplete set of representations.Some recent work \citep{mairal2009supervised} has shown that sparsity captures high-order correlation in data and it captures higher order statistics in data.\\

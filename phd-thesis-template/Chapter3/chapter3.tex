@@ -6,29 +6,39 @@
 \else
     \graphicspath{{Chapter3/Figs/Vector/}{Chapter3/Figs/}}
 \fi
-In this chapter we present the basic framework of our vessel segmentation method. We start by setting up the various notation used throughout the chapter and give an overview about how the framework is applied.Next we discuss the two different models applied in the framework.This forms the core of this thesis and represents the major work done. At last we mention the various datasets utilized to test our models. In the next chapter we begin by running few experiments on the datasets to test the feasibility of models.\\
+In this chapter we present the basic framework of our vessel segmentation method. We start by setting up the various notations used throughout the chapter and give an overview about how the framework is applied.Next we discuss the two different models applied in the framework.This forms the core of this thesis and represents the major work done. At last we mention the various datasets utilized to test our models. In the next chapter we experimentally evaluate the models.\\
 \section{Vessel segmentation Framework}
 We start by defining the basic notations and methods. The input to our vessel segmentation framework is a training set composed of fundus images and their corresponding segmentation or label maps. The collection of fundus images is represented by $\bar{I} = (I^{(1)},I^{(2)}...., I^{(n)} )$  and their correspoding ground truth segmentation maps as $\bar{S} = (S^{(1)},S^{(2)}...., S^{(n)} )$. Each given image is of size M x N.
-For simplicity, in the rest of the section a single image would be referred as I and S and the image I is a single channel image.\\
+For simplicity, in the rest of the section a we would refer an image as I and its segmentation map S. We also assume that the image I is a single channel image.\\
 
-An image can be represented as a collection of overlapping patches computed around every pixel at center. A patch is of size $\sqrt{n}$ x $\sqrt{n}$ unless otherwise noted. We represent a patch centered at location (x ,y) as $p_{x,y}$, and patches for I and S can be represented as $Ip_{x,y}$ and $Sp_{x,y}$ respectively. For simplicity we can refer the pixels of patch as $\mathbb{P}_i$ for i =[1...n]. A patch is represented as a vector , obtained by concatenating the image patch values.\\
+We can represent an image as a collection of overlapping patches computed around every pixel take at center. A patch is of size $\sqrt{n}$ x $\sqrt{n}$ unless otherwise noted. We represent a patch centered at location (x ,y) as $p_{x,y}$, and patches for I and S can be represented as $Ip_{x,y}$ and $Sp_{x,y}$ respectively. For simplicity we would refer the pixels of patch as ${p}_i$ for i =[1...n], where 'i' is the pixel location. A patch can also be represented as a vector , obtained by concatenating the image patch values.\\
 
-Now we can represent our datasets as 
+We then represent our dataset with each image in terms of their patches as:
 
-%\begin{equation}
-%	
-%\bar{I} = \begin{pmatrix}
-%	I^(1)\mathbb{P}_1 & I^(1)\mathbb{P}_2 & \cdots & I^(1)\mathbb{P}_n \\
-%	I^(2)\mathbb{P}_1 & I^(2)\mathbb{P}_2 & \cdots & I^(2)\mathbb{P}_n \\
-%	\vdots  & \vdots  & \ddots & \vdots  \\
-%	I^(M)\mathbb{P}_1 & I^(M)\mathbb{P}_2 & \cdots & I^(M)\mathbb{P}_n \\
-%	\vdots  & \vdots  & \ddots & \vdots  \\
-%	I^(N)\mathbb{P}_1 & I^(N)\mathbb{P}_2 & \cdots & I^(N)\mathbb{P}_n 
-%\end{pmatrix}
-%
-%\end{equation}
-%
-%
+\begin{equation}\label{eq:dataset}
+I = 	
+\begin{pmatrix}
+I^{(1)}{p}_1 & I^{(1)}{p}_2 & \cdots & I^{(1)}{p}_n \\
+I^{(2)}{p}_1 & I^{(2)}{p}_2 & \cdots & I^{(2)}{p}_n \\
+\vdots  		  & \vdots  		  & \ddots & \vdots  \\
+I^{(M)}{p}_1 & I^{(M)}{p}_2 & \cdots & I^{(M)}{p}_n \\
+\vdots  		  & \vdots  		  & \ddots & \vdots  \\
+I^{(N)}{p}_1 & I^{(N)}{p}_2 & \cdots & I^{(N)}{p}_n 
+\end{pmatrix}
+\\
+,S = 	
+\begin{pmatrix}
+S^{(1)}{p}_1 & S^{(1)}{p}_2 & \cdots & S^{(1)}{p}_n \\
+S^{(2)}{p}_1 & S^{(2)}{p}_2 & \cdots & S^{(2)}{p}_n \\
+\vdots  		  & \vdots  		  & \ddots & \vdots  \\
+S^{(M)}{p}_1 & S^{(M)}{p}_2 & \cdots & S^{(M)}{p}_n \\
+\vdots  		  & \vdots  		  & \ddots & \vdots  \\
+S^{(N)}{p}_1 & S^{(N)}{p}_2 & \cdots & S^{(N)}{p}_n 
+\end{pmatrix}
+\end{equation}
+
+
+
 Fig~\ref{fig:fundus example} shows an example of fundus image on the left and the correspoding segmentation image on the right.\\
 
 \begin{figure}
@@ -50,37 +60,33 @@ Fig~\ref{fig:fundus example} shows an example of fundus image on the left and th
 	\label{fig:fundus example}
 \end{figure}
 
-The aim of our thesis is to learn a function F which maps image I to its segmentation S, i.e, we want to learn a function to segment the vessel in a given fundus image. Inspired by works of [ref][ref] we approach the problem of prediction of segmentation maps in a  patch based framework. This means that to predict the segmentation map for an image I, we decompose the image into overlapping patches and predict the segmentation maps for individual patches. The image and the segmentation map after decompostion can be represented as in Equation [].
+The aim of our thesis is to learn a function F which maps the image to its segmentation as, $ F: I \rightarrow S $, i.e, we want to learn a function to segment the vessel in a given fundus image. Inspired by the work of \cite{mnih2012learning,lim2013sketch} we approach the problem of predicting segmentation maps in a  patch based framework. In this patch level method, to predict the segmentation map for an image I, we decompose the image into overlapping patches and predict the segmentation maps for individual patches. in a patch by patch fashion. The image and the segmentation map after decompostion can be represented as in Equation \ref{eq:dataset}.Here 'I' denotes the fundus image and 'S' its segmentation map.//
 
-$$ F: I \rightarrow S $$
+At the test time, we compute the patches for a given image and the mapping fucntion F is the used to predict the segmentation map for all the test patches.Finally,the output segmentation patches are combined by averaging ,resulting in an output segmented image.As the patches are computed in an overlapping way, to each pixel several segmentation patches are added during reconstruction phase. More precisely, each pixel is composed of N pixel values from N nearby patches.\\
 
-Here 'I' denotes the fundus image and 'S' its segmentation map.
+\subsection{Learning Architecture}
+The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map. In both of our models we learn local structure representations in form of a dictionary. This dictionary is composed of patches representing the edge structures, t- junctions, crossovers, parallel lines and other commonly occuring local patterns. To these patches is associated their ground truth segmentations. At prediction time, we then approximately decompose each patch as a linear combinaton of dictionary elements.To compute the final segmentation of the patch, each atom of the dictionary element in the linear combination is replaced by its segmentation.\\
 
-At the test time, for a given image , we compute the patches and the mapping fucntion F is applied on all the test patches to obtain the segmentation.The output segmentation patches are combined by averaging ,thus resulting in an output segmented image.As the computed patches are overlapping, to each pixel several segmentation patches are added.More precisely, each pixel is composed of N pixel values.\\
-
-In the next section we discuss how the mapping function F can be learnt. We present two models to predict the ground truth segmentation of a patch.
-
-
-\section{Learning}
-The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map.In our work, we learn a dictionary of representative image patches and a dictionary of segmentation patches. These dictionaries are then used to map the input image patch to its segmentation map. We explore two different methods to learn these dictionaries. Each image patch in the dictionary is denoted as an atom and our aim to find the best set of atoms so as to approximately infer closest segmentation. We notice that the these dictionaries resemble the local edge structure like junctions, stragight lines,crossover etc.
-
-Before we explore the methods we list the common operation performed on out dataset.
+Both of the models presented in the section, learn this dictionary for predicting the ground truth map.
+Before we delve into our models, we list the common pre processing operations on the input data.
  
 \subsubsection{Preprocessing}
-For our task we have explored some of the preprocessing steps including patch normalization, contrasts streching and local contrast normalization.
-For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
+For our task we have explored some of the preprocessing steps including patch normalization, contrasts streching and local contrast normalization. For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
 
-\subsubsection{Rotations}
-To learn better image representations, we augmented the training set by adding the rotated pair of image and segmentation maps at an angle of 30,60,90,120 and 150 degrees. Adding rotations in general would help to learn better cases where the vessels might appear in different orientations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Cluster Learning}
-In our cluster learning framework, we learn an intermediate patch and segmentation maps. We then match our new patches to this dictionary and get the segmentation map from these images.
+In this model we find common local structures within the data using clustering. Image patches are clustered to find a common set of locally appearing structures within the image. As we know the ground truth annotations associated to each image patch, we find the segmenation maps for our clustered structures by associating each segmentation image patch to its corresponding cluster. In this way we learn a dictionary in the form of \{image patch : segmentation\} which is then used to find segmentation map for new patches. This method is inspired in part by work of \citep{lim2013sketch} where they learn commonly occuring structures by clustering on annotated segmentation patches.\\
+We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure shows an exaple of learnt dictionary on drive dataset.
+
+In the next section we describe in detail the implementation of learning and prediction steps of our algorithm.
+
 \subsection{Learning}
 
 The training procedure for our method requires learning clusters within the input patches. Training is performed on the patches drawn from the input images $I_1$,$I_2$,...$I_n$ and corresponding segmentation images $S_1$,$S_2$,...$S_n$. 
 
-From the training images, we compute a random subset of m patches of fixed size n x n and their corresponding annotation as computed from the segmentation images. This subset of patches is used to further learn a dictionary of patches and their annotations. Let us denote a patch as $x_i$ and its corresponding segmentation annotation patch as $y_i$. Then the new trainig set can be represented as:
+From the training images, we compute a random subset of m patches of fixed size $\sqrt{n}$ x $\sqrt{n}$ and their corresponding annotation as computed from the segmentation images. This subset of patches is used to learn a representative dictionary of patches representing the locally occuring structurein the image and the associated segmentation maps. Let us denote a patch as $x_i$ and its corresponding segmentation map patch as $y_i$. Then the new trainig set can be represented as:
 
 $$
 X = \{x_1,x_2,....,x_n\}
@@ -89,55 +95,69 @@ $$
 Y = \{y_1,y_2,....,y_n\}
 $$
 \\
-We then find 'k' clusters within the patches in X usin K-Means clustering. Let the 'k' learnt cluster centers be represented as $C = \{c_1, c_2,..., c_k\} $ and the k clusters can be represented as $C_1,C_2,...,C_k$. A cluster with 'm' patches then can be represented as
+In the next step we find 'k' clusters within the patches in X usin K-Means clustering as explained in \ref{sec:kmeans}. Let the 'k' learnt cluster be denoted as $C = \{C_1,C_2,...,C_k\} $ where the clusters then can be represented by their cluster centroids $c_1, c_2,..., c_k$. A cluster with 'm' patches then can be represented as
 
 $$
 C_k = \{x^k_1,x^k_2,....,x^k_m\}
 $$
 
-Now, since we know the annotation $y_i$ for each training patch $x_i$, the image patches in each cluster can be repalced with their corresponding annotation patches to obtain the segmentation cluster as:
+Now, since we know the annotation $y_i$ for each training patch $x_i$, the image patches in each cluster can be repalced with their corresponding annotation patches to obtain a group of segmentation cluster where each such cluster can be represented as:
 $$
 SC_k = \{y^k_1,y^k_2,....,y^k_m\}
 $$
 
-We then find the representative point for the segmentation cluster by averaging all the patches belonging to it.
+We then represent each segmentation cluster by the average of all the points within that cluster, found as:
 $$	
 sc_k = \frac{1}{m}\sum\limits_{i=1}^{m} y^k_m
 $$
 
-Finally we create a dictionary mapping the cluster to their ground truth representatives as.
+Finally, we obtain a dictionary which maps the image cluster to a ground truth segmentation patch.
 $$
-D = \{ (C_k : gc_k) | k =1..m\}
+D = \{ (C_k : sc_k) | k =1..m\}
 $$
 
-An example of dictionary learnt over image patches on DRIVE dataset is showin in figure[].
+An example of a learned dictionary over image patches on DRIVE dataset is showin in Figure \ref{fig:cb-cls}
+\begin{figure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{cluscenters}
+		\caption{Learned cluster centers.}
+		\label{fig:cluscenters}
+	\end{subfigure}
+	%
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{gtclusters1}
+		\caption{Segmentation maps for learned clusters.}
+		\label{fig:gtclusters}
+	\end{subfigure}
+	\caption[Local structures learned using clustering and their segmenations maps]{The image on the left shows the local structures appearing in the images. We can see a mix of straight lines at different orientations and other complex structures. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
+	\label{fig:cb-cls}
+\end{figure}
 
 \subsection{Prediction}
-At test time, the patches of an image are assigned to a cluster based on the learnt model.The desired annotation is then obtained by a lookup in the dictionary D.
+At test time, to predict the segmenation map for an image, we start by extracting dense patches centered at all pixel in the image. For each extracted patch its cluster membership is predicted using the already trained clustering model. The cluster labels are then matched in the dictionary to obtain the respective segmentation map for the patch.Output image is reconstructed from the patch annotations by averaging. 
 
 \subsection{Algorithm}
 The entire learning algorithm than can be summarized in following steps:
 \begin{enumerate}
 \item Extract a set of random Image-Segmentation patches of size m x m from the training images.
-
 \item Train a K-Means clustering model on the input image patches and learn k clusters on the input.
-
 \item Compute the ground truth patch for each cluster by averaging the ground truth annotations for each patch belonging to a cluster. 
-
 \item Construct a dictionary of Cluster and annotations.
 \end{enumerate}
 
 
-
 \section{Dictionary Learning}
-
-Our method is based on learning dictionary of patches from training data. In our methods we learn two dictionaries each for representing the image patches and their segmentations. The methods in a way is very similar to the above method where we associate a a learnt patch to its ground truth segmentation and use the dictionary for predicting new segmentations. The difference is in the way dictiontary of patches is learnt and the way in which a patch is matched to the dictionary. \\
-
-Our proposed method is based on learning a spare dictionary of patches, of which a linear combination can be used to represent an image patch.
-For each such image patches, denoted as dictionary atoms, we find a corresponding segmentation label patch.\\
+The model is based on learning an overcomplete dictionary over the training data. We aim to learn a good dictionary which can represent our data as a sparse linear combination of the dictionary atoms.
+This method is similar to our previous method where also we learn a dictionary represent the local structures withing the data. The mathematical reasoning behind is that, a signal ( in our case an image) can be represented as a combination of a small number of basic structures, like edges and lines.
+It is also easy to obtain the segmentation maps for such basic atoms. In our method, for each such image patch, denoted as dictionary atoms, we find a corresponding segmentation label patch from the given segmentation map for the image.\\
 
 For example, given an overcomplete dictionary of atoms D $\in$ $R^{m,k}$, with k columns as the learnt image atoms, we can reconstruct a given image patch x $\in$ $R^m$ as a linear combination of atoms in D. More formally, we learn a sparse code $\alpha$ over D to represent x as
+
 $$ x \approx D \alpha $$  
+
+This is very similar to our cluster based methdo. The learnt cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$.This constraint forces our data point to be represented by only one cluster.
+
+The advantage of the dictionary learning method is that it can represent complex structures like t-junctions and crossover regions much more accurately as a combination of various atoms. In the following section we describe the implementation of the learning model.
 
 \subsection{Learning}
 The learning phase starts by extracting image and label patches from the training data. Let us represent our training set composed of random patches as,
@@ -147,11 +167,10 @@ $$
 $$
 Y = \{y_1,y_2,....,y_n\}
 $$
-where X is composed of image patches and Y the corresponding label patches. Each image patch can be representated as a vector by concatenating each of the pixel values. So give, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$ , can be represented in form of matrices as 
-X,Y $\in$ $R^{m,n}$. Each row in the matrice denotes a patch or image atom.
+where X is composed of image patches and Y the corresponding label patches. Each image patch can be representated as a vector by concatenating each of the pixel values. So given, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$ ,the dataset can than be represent as matrices 
+X,Y $\in$ $R^{m,n}$. Each row in the matrix denotes a patch or image atom.\\
 
-We learn an overcomplete dictionary  D of basis atoms from the image patches using the dictionary learning methods as described in[].
-The aim is to learn a dictionary D with k atoms which can best represent $x_i$ using linear combination of a few atoms $d_k$ of the learnt dictionary.
+We learn an overcomplete dictionary D of basis atoms from the image patches using the dictionary learning methods as described in section \ref{sec:dlsparse}. The aim is to learn a dictionary D with k atoms which can best represent $x_i$ using linear combination of a few atoms $d_k$ of the learnt dictionary.
 
 In the next step we learn a sparse code $\alpha$ to represent our input X in terms of dictionary atoms.
 $$
@@ -161,7 +180,23 @@ Since we already know the ground truth annotation Y for X, we can infer that Y c
 
 As the sparse code remains same for both the representations, we can compute the dictionary atoms from L by taking a weighted average of all the ground truth patches in Y, weighed by sparse codes for all the patches.\\
 
-So we learn two dictionaries, D of image patches and L of the respective label patches for atoms in D.
+So we learn two dictionaries, D of image patches and L consisting of label patches corresponding to atoms in D. An example of the learned dictionaries D and L over DRIVE dataset is shown in figure \ref{fig:dl-cls}
+
+\begin{figure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{dict}
+		\caption{Dictionary D of atoms learned on the raw image patches}
+		\label{fig:dict}
+	\end{subfigure}
+	%
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{dict_gt}
+		\caption{Dictionary L, consisting of computed segmentatiom maps for atoms in D}
+		\label{fig:dictgt}
+	\end{subfigure}
+	\caption[Dictionary of image atoms and segmentations]{The image on the left shows the learnt representative atoms on raw image patches. Most of the atoms depict simple structures like lines and edges. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
+	\label{fig:dl-cls}
+\end{figure}
 
 \subsection{Prediction}
 At the test time, given an image I, dense patches can be computed and the image can be represented as a matrix I $\in$ R, where each row represents a patch of size n x n. We then compute a sparse decomposition of I over dictionary D represented by a sparse code $\alpha$ such that:
