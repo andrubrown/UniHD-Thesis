@@ -36,7 +36,7 @@ Some of the more sophisticated models use learning based algorithms which learn 
 	\caption{Architecture for automated segmentation of retinal vessels.}
 	\label{fig:basicmodel}		
 \end{figure}
-Supervised learning methods, in general are limited by the amount of training data.Also most of them are restricted to the type of training data and do not generalize on the task at hand. In our thesis, we propose two supervised learning models for accurate vessel segmentation. Our method is a patch-based framework and learns the local structure of the vessel at patch level. An illustrative architecture of our framework is shown in figure \ref{fig:basicmodel}, exploits the presence of common structures in a typical vasculature tree. Unlike most of the supervised learning methods which make a prediction at pixel level, classifying each pixel as vessel or background, our model predicts the local structure around each pixel at patch level.
+Supervised learning methods, in general are limited by the amount of training data.Also most of them are restricted to the type of training data and do not generalize on the task at hand. In our thesis, we propose two supervised learning models for accurate vessel segmentation. Our method is a patch-based framework and learns the local structure of the vessel at patch level. An illustrative architecture of our framework is shown in figure \ref{fig:basicmodel}, exploits the presence of common structures in a typical vasculature tree. Unlike most of the supervised learning methods which make a prediction at pixel level, classifying each pixel as vessel or background, our model predicts the local structure around each pixel at patch level, giving a structured output for each patch. We show that our model generalizes well over different training data and is somewhat robust to changing imaging parameters like field of view and resolution.
 
 \section{Outline of thesis}
 The thesis is organized as follow,
@@ -44,5 +44,5 @@ The thesis is organized as follow,
 	\item Chapter 2 provides some background knowledge on machine learning and used algorithms. It is followed by a brief overview on existing work on blood vessel segmentation.Finally, we explain in detail some of the methods by which our work is inspired.
 	\item Chapter 3 starts by defining our patch-based framework for vessel segmentation. We then explain our models based on cluster learning and dictionary learning.
 	\item Chapter 4 presents the evaluations and experimental results of our methods applied to three datasets. We present the effect of different setting on the performance. We also compare our evaluations with some of the work in the literature.
-	\item Chapter 5, finally gives our concluding remarks and sets the tone for future work that can be carried on this approach. 
+	\item Chapter 5, finally gives our concluding remarks and sets the tone for future work.
 \end{itemize}

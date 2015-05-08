@@ -5,11 +5,23 @@
 \else
     \graphicspath{{Chapter4/Figs/Vector/}{Chapter4/Figs/}}
 \fi
-In this thesis, we presented two new learning approaches to solve the problem of vessel segmentaion in fundus images. The first model, is  based on learning dictionaries of stuctured annotation for representative patches in a clustering based setting. These raw patches in the dictionary represent the commonly occuring local structures/patterns. The other method involves computing sparse representations of an image by decomposing them as a linear combination of learned basis elements. These learned elements called as the dictionary atoms represent mostly represent common stuctures like edges and lines. These method have a demonstrated comparable performance to the state-of-art methods.\\
+In this study, we proposed two new learning approaches to solve the problem of vessel segmentation in fundus images.Our models are based on a learning framework from training data.
+Our models exploit the presence of frequently occurring basic structures in retinal vessels. In our models, we characterize the presence of structures like edges and straight lines. The model named Cluster Based - Common local structures (CB-CLS), is a partially supervised learning method. We start by learning the common patterns within the raw data by an unsupervised clustering approach and then assigning segmentation maps to them from given segmentation maps.\\
+The model works well in predicting thick vessels and parallel vessels. The second model is basically an extension of the first model, where we learn the structures and annotations in a sparse coding dictionary learning framework. Our model, Common Local Structures in Learned dictionaries (CLS-LD), represent each individual patch as a sparse linear combination of dictionary atoms. This helps us to approximate t-junctions and bifurcations in a better way. The preliminary results for our Dictionary learning model were similar to that of the other model. The models requires further tuning and some experiments to verify the capabilities of it. Our methods though very simple, demonstrated good performance compared to the current state-of-art methods.
 
-The key contribution in the thesis is a generalizable vessel segmentation model, which is partially independent to the training dataset. The model works by learning low level representations withing the data. We learn a dictionary of features likes edges, lines within the data. These learned common structures add to the generalizng propoerty of the classifier. As in section \ref{sec:generalization} we have shown the generalization capabilties of our cluster learning model.
+One of the key contribution in the thesis is a generalizable vessel segmentation model, which is partially independent to the training dataset.Our model has very little dependence on the training data as compared to some other methods whose performance depend on the underlying training data.This comes from the fact that the model exploits the presence of common structures and utilizes them to make structured segmentation prediction at patch level.
 
-The preliminary results for our Dictionary learning model were similar to that of the other model. The model is designed so as to deal with crossover and junctions where there are overlapping vessels. The models requires further tuning and some experiments to verify the capabilities of it.
+Our model though not optimized with speed in mind, has a reasonably fast run time of approximately 4sec per image for an image size of 584 x 565 pixels. This is the total prediction time per image.
+With code optimization we can further reduce the run time of our mode. At present we are predicting the patches at all the pixels. By using some initial preprocessing methods, we can get an average segmentation and predict on only the relevant pixels thereby further reducing the run time.\\
 
-Our model though not optimized with speed in mind, has a reasonably fast run time of approximately 4sec per image for an image size of 584 x 565 pixels. This is the total prediction time per image.  With code optimization we can further reduce the run time of our mode. At present we are predicting the patches at all the pixels. By using some initial preprcoessing methods, we can get an average segmentation and predict on only the relevant pixels thereby further reducing the run time.
+The future work would be aimed at extending these methods. Some of the following things we should look into:
+\begin{itemize}
+	\item Our models do not segment out the very thin vessels perfectly. We should look into extending the model in a way to extract thin vessels. As most of the methods do work very well on the thick vessels,one way to look into it is to have separate models for thin and thick vessels.
+	\item The dictionary learning model needs more evaluation. We believe that with better tuning and learning better dictionaries we would be able to estimate the segmentation at crossover regions and bifurcation zones much reliably.
+	\item At present we make a dense prediction i.e, we make predictions on all the pixel including the obvious background pixels. By using preprocessing methods or utilizing basic edge detectors, we can detect the points of interest and make prediction much more efficiently.
+	\item We should validate our model on other similar problems of vessel segmentation in medical images. 
+\end{itemize}
+
+
+
 

@@ -137,10 +137,10 @@ The Precision recall curve and receiver operation characteristics for our soluti
 	
 	\begin{subfigure}[b]{0.75\textwidth}
 		\includegraphics[width=\textwidth]{bestworsecomp.png}
-		\caption{ROC Curve}
+		\caption{ROC Curve for images 11 and 19}
 		\label{fig:bestworse}
 	\end{subfigure}
-	\caption[ROC curve comparing the best and worse case on DRIVE set]{ROC curve comparing the best and worse case on DRIVE dataset.}
+	\caption[ROC curve comparing the best and worse case on DRIVE set]{ROC curve comparing the best and worse case images on DRIVE dataset.}
 	\label{fig:bestroc}
 \end{figure}
 \clearpage
@@ -154,6 +154,11 @@ As we can see, that our cluster learning model has a decent performance and perf
 		\includegraphics[width=\textwidth]{compareall.png}
 		\caption{ROC Curve}
 		\label{fig:com}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.75\textwidth}
+		\includegraphics[width=\textwidth]{prcall.png}
+		\caption{PRC Curve}
+		\label{fig:prc1}
 	\end{subfigure}
 	\caption[Results on DRIVE dataset]{We compare our model by testing it on the DRIVE dataset. Results are shown for some of the state-of-art methods in literature. SE is the structured forest model by \citet{dollar2013structured},DL is the dictionary leaned filter model by \citet{rigamonti2013learning}, CS is the linear filter model by \citet{rigamonti2012accurate}, N4 is the CNN-kNN model by \citet{ganin2014n},MICCAI is the method proposed by \citet{becker2013supervised}}
 	\label{fig:compareall}
@@ -243,12 +248,12 @@ The AUC curves for all the three trainings are shown in figure \ref{fig:compares
 
 \begin{figure}
 	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.8\textwidth}
 		\includegraphics[width=\textwidth]{stare_drive.png}
 		\caption{ROC of STARE trained  on DRIVE}
 		\label{fig:str}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.8\textwidth}
 		\includegraphics[width=\textwidth]{stare_all.png}
 		\caption{ROC for STARE}
 		\label{fig:str1}

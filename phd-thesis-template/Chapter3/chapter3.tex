@@ -84,7 +84,7 @@ For our task we have explored some of the preprocessing steps including patch no
 
 \section{Cluster Learning}
 In this model we find common local structures within the data using clustering. Image patches are clustered to find a common set of locally appearing structures within the image. As we know the ground truth annotations associated to each image patch, we find the segmentation maps for our clustered structures by associating each segmentation image patch to its corresponding cluster. In this way we learn a dictionary in the form of \{image patch : segmentation\} which is then used to find segmentation map for new patches. This method is inspired in part by work of \citep{lim2013sketch} where they learn commonly occurring structures by clustering on annotated segmentation patches.\\
-We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure shows an example of learnt dictionary on drive dataset.
+We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure shows an example of learned dictionary on drive dataset.
 
 In the next section we describe in detail the implementation of learning and prediction steps of our algorithm.
 
@@ -92,7 +92,7 @@ In the next section we describe in detail the implementation of learning and pre
 
 The training procedure for our method requires learning clusters within the input patches. Training is performed on the patches drawn from the input images $I_1$,$I_2$,...$I_n$ and corresponding segmentation images $S_1$,$S_2$,...$S_n$. 
 
-From the training images, we compute a random subset of m patches of fixed size $\sqrt{n}$ x $\sqrt{n}$ and their corresponding annotation as computed from the segmentation images. This subset of patches is used to learn a representative dictionary of patches representing the locally occurring structurein the image and the associated segmentation maps. Let us denote a patch as $x_i$ and its corresponding segmentation map patch as $y_i$. Then the new training set can be represented as:
+From the training images, we compute a random subset of m patches of fixed size $\sqrt{n}$ x $\sqrt{n}$ and their corresponding annotation as computed from the segmentation images. This subset of patches is used to learn a representative dictionary of patches representing the locally occurring structures in the image and the associated segmentation maps. Let us denote a patch as $x_i$ and its corresponding segmentation map patch as $y_i$. Then the new training set can be represented as:
 
 $$
 X = \{x_1,x_2,....,x_n\}
@@ -101,7 +101,7 @@ $$
 Y = \{y_1,y_2,....,y_n\}
 $$
 \\
-In the next step we find 'k' clusters within the patches in X using K-Means clustering as explained in \ref{sec:kmeans}. Let the 'k' learnt cluster be denoted as $C = \{C_1,C_2,...,C_k\} $ where the clusters then can be represented by their cluster centroids $c_1, c_2,..., c_k$. A cluster with 'm' patches then can be represented as
+In the next step we find 'k' clusters within the patches in X using K-Means clustering as explained in \ref{sec:kmeans}. Let the 'k' learned cluster be denoted as $C = \{C_1,C_2,...,C_k\} $ where the clusters then can be represented by their cluster centroids $c_1, c_2,..., c_k$. A cluster with 'm' patches then can be represented as
 
 $$
 C_k = \{x^k_1,x^k_2,....,x^k_m\}
@@ -153,17 +153,19 @@ The entire learning algorithm than can be summarized in following steps:
 
 
 \section{Dictionary Learning}
-The model is based on learning an overcomplete dictionary over the training data. We aim to learn a good dictionary which can represent our data as a sparse linear combination of the dictionary atoms.
+The model is based on learning an over-complete dictionary over the training data. We aim to learn a good dictionary which can represent our data as a sparse linear combination of the dictionary atoms.
 This method is similar to our previous method where also we learn a dictionary represent the local structures within the data. The mathematical reasoning behind is that, a signal ( in our case an image) can be represented as a combination of a small number of basic structures, like edges and lines.
 It is also easy to obtain the segmentation maps for such basic atoms. In our method, for each such image patch, denoted as dictionary atoms, we find a corresponding segmentation label patch from the given segmentation map for the image.\\
 
-For example, given an overcomplete dictionary of atoms D $\in$ $R^{m,k}$, with k columns as the learnt image atoms, we can reconstruct a given image patch x $\in$ $R^m$ as a linear combination of atoms in D. More formally, we learn a sparse code $\alpha$ over D to represent x as
+For example, given an over complete dictionary of atoms D $\in$ $R^{m,k}$, with k columns as the learned image atoms, we can reconstruct a given image patch x $\in$ $R^m$ as a linear combination of atoms in D. More formally, we learn a sparse code $\alpha$ over D to represent x as
 
 $$ x \approx D \alpha $$  
 
-This is very similar to our cluster based method. The learnt cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$.This constraint forces our data point to be represented by only one cluster.
+This is very similar to our cluster based method. The learned cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$.This constraint forces our data point to be represented by only one cluster.
 
-The advantage of the dictionary learning method is that it can represent complex structures like t-junctions and crossover regions much more accurately as a combination of various atoms. In the following section we describe the implementation of the learning model.
+The advantage of the dictionary learning method is that it can represent complex structures like t-junctions and crossover regions much more accurately as a combination of various atoms.
+As the local structures are learned in dictionaries, we call our method as 'Common Local Structures in Learned Dictionaries(CLS-LD)'
+In the following section we describe the implementation of the learning model.
 
 \subsection{Learning}
 The learning phase starts by extracting image and label patches from the training data. Let us represent our training set composed of random patches as,
@@ -176,7 +178,7 @@ $$
 where X is composed of image patches and Y the corresponding label patches. Each image patch can be represented as a vector by concatenating each of the pixel values. So given, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$ ,the dataset can than be represent as matrices 
 X,Y $\in$ $R^{m,n}$. Each row in the matrix denotes a patch or image atom.\\
 
-We learn an overcomplete dictionary D of basis atoms from the image patches using the dictionary learning methods as described in section \ref{sec:dlsparse}. The aim is to learn a dictionary D with k atoms which can best represent $x_i$ using linear combination of a few atoms $d_k$ of the learnt dictionary.
+We learn an over complete dictionary D of basis atoms from the image patches using the dictionary learning methods as described in section \ref{sec:dlsparse}. The aim is to learn a dictionary D with k atoms which can best represent $x_i$ using linear combination of a few atoms $d_k$ of the learned dictionary.
 
 In the next step we learn a sparse code $\alpha$ to represent our input X in terms of dictionary atoms.
 $$
@@ -200,7 +202,7 @@ So we learn two dictionaries, D of image patches and L consisting of label patch
 		\caption{Dictionary L, consisting of computed segmentation maps for atoms in D}
 		\label{fig:dictgt}
 	\end{subfigure}
-	\caption[Dictionary of image atoms and segmentations]{The image on the left shows the learnt representative atoms on raw image patches. Most of the atoms depict simple structures like lines and edges. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
+	\caption[Dictionary of image atoms and segmentations]{The image on the left shows the learned representative atoms on raw image patches. Most of the atoms depict simple structures like lines and edges. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
 	\label{fig:dl-cls}
 \end{figure}
 \clearpage
