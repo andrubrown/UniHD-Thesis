@@ -5,3 +5,11 @@
 \else
     \graphicspath{{Chapter4/Figs/Vector/}{Chapter4/Figs/}}
 \fi
+In this thesis, we presented two new learning approaches to solve the problem of vessel segmentaion in fundus images. The first model, is  based on learning dictionaries of stuctured annotation for representative patches in a clustering based setting. These raw patches in the dictionary represent the commonly occuring local structures/patterns. The other method involves computing sparse representations of an image by decomposing them as a linear combination of learned basis elements. These learned elements called as the dictionary atoms represent mostly represent common stuctures like edges and lines. These method have a demonstrated comparable performance to the state-of-art methods.\\
+
+The key contribution in the thesis is a generalizable vessel segmentation model, which is partially independent to the training dataset. The model works by learning low level representations withing the data. We learn a dictionary of features likes edges, lines within the data. These learned common structures add to the generalizng propoerty of the classifier. As in section \ref{sec:generalization} we have shown the generalization capabilties of our cluster learning model.
+
+The preliminary results for our Dictionary learning model were similar to that of the other model. The model is designed so as to deal with crossover and junctions where there are overlapping vessels. The models requires further tuning and some experiments to verify the capabilities of it.
+
+Our model though not optimized with speed in mind, has a reasonably fast run time of approximately 4sec per image for an image size of 584 x 565 pixels. This is the total prediction time per image.  With code optimization we can further reduce the run time of our mode. At present we are predicting the patches at all the pixels. By using some initial preprcoessing methods, we can get an average segmentation and predict on only the relevant pixels thereby further reducing the run time.
+

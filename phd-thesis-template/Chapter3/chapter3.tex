@@ -2,13 +2,13 @@
 
 % **************************** Define Graphics Path **************************
 \ifpdf
-    \graphicspath{{Chapter3/Figs/Raster/}{Chapter3/Figs/PDF/}{Chapter3/Figs/}}
+\graphicspath{{Chapter3/Figs/Raster/}{Chapter3/Figs/PDF/}{Chapter3/Figs/}}
 \else
-    \graphicspath{{Chapter3/Figs/Vector/}{Chapter3/Figs/}}
+\graphicspath{{Chapter3/Figs/Vector/}{Chapter3/Figs/}}
 \fi
 In this chapter we present the basic framework of our vessel segmentation method. We start by setting up the various notations used throughout the chapter and give an overview about how the framework is applied.Next we discuss the two different models applied in the framework.This forms the core of this thesis and represents the major work done. At last we mention the various datasets utilized to test our models. In the next chapter we experimentally evaluate the models.\\
 \section{Vessel segmentation Framework}
-We start by defining the basic notations and methods. The input to our vessel segmentation framework is a training set composed of fundus images and their corresponding segmentation or label maps. The collection of fundus images is represented by $\bar{I} = (I^{(1)},I^{(2)}...., I^{(n)} )$  and their correspoding ground truth segmentation maps as $\bar{S} = (S^{(1)},S^{(2)}...., S^{(n)} )$. Each given image is of size M x N.
+We start by defining the basic notations and methods. The input to our vessel segmentation framework is a training set composed of fundus images and their corresponding segmentation or label maps. The collection of fundus images is represented by $\bar{I} = (I^{(1)},I^{(2)}...., I^{(n)} )$  and their corresponding ground truth segmentation maps as $\bar{S} = (S^{(1)},S^{(2)}...., S^{(n)} )$. Each given image is of size M x N.
 For simplicity, in the rest of the section a we would refer an image as I and its segmentation map S. We also assume that the image I is a single channel image.\\
 
 We can represent an image as a collection of overlapping patches computed around every pixel take at center. A patch is of size $\sqrt{n}$ x $\sqrt{n}$ unless otherwise noted. We represent a patch centered at location (x ,y) as $p_{x,y}$, and patches for I and S can be represented as $Ip_{x,y}$ and $Sp_{x,y}$ respectively. For simplicity we would refer the pixels of patch as ${p}_i$ for i =[1...n], where 'i' is the pixel location. A patch can also be represented as a vector , obtained by concatenating the image patch values.\\
@@ -39,7 +39,7 @@ S^{(N)}{p}_1 & S^{(N)}{p}_2 & \cdots & S^{(N)}{p}_n
 
 
 
-Fig~\ref{fig:fundus example} shows an example of fundus image on the left and the correspoding segmentation image on the right.\\
+Fig~\ref{fig:fundus example} shows an example of fundus image on the left and the corresponding segmentation image on the right.\\
 
 \begin{figure}
 	\centering
@@ -60,31 +60,31 @@ Fig~\ref{fig:fundus example} shows an example of fundus image on the left and th
 	\label{fig:fundus example}
 \end{figure}
 
-The aim of our thesis is to learn a function F which maps the image to its segmentation as, $ F: I \rightarrow S $, i.e, we want to learn a function to segment the vessel in a given fundus image. Inspired by the work of \cite{mnih2012learning,lim2013sketch} we approach the problem of predicting segmentation maps in a  patch based framework. In this patch level method, to predict the segmentation map for an image I, we decompose the image into overlapping patches and predict the segmentation maps for individual patches. in a patch by patch fashion. The image and the segmentation map after decompostion can be represented as in Equation \ref{eq:dataset}.Here 'I' denotes the fundus image and 'S' its segmentation map.//
+The aim of our thesis is to learn a function F which maps the image to its segmentation as, $ F: I \rightarrow S $, i.e, we want to learn a function to segment the vessel in a given fundus image. Inspired by the work of \cite{mnih2012learning,lim2013sketch} we approach the problem of predicting segmentation maps in a  patch based framework. In this patch level method, to predict the segmentation map for an image I, we decompose the image into overlapping patches and predict the segmentation maps for individual patches. in a patch by patch fashion. The image and the segmentation map after decomposition can be represented as in Equation \ref{eq:dataset}.Here 'I' denotes the fundus image and 'S' its segmentation map.//
 
 At the test time, we compute the patches for a given image and the mapping fucntion F is the used to predict the segmentation map for all the test patches.Finally,the output segmentation patches are combined by averaging ,resulting in an output segmented image.As the patches are computed in an overlapping way, to each pixel several segmentation patches are added during reconstruction phase. More precisely, each pixel is composed of N pixel values from N nearby patches.\\
 
 \subsection{Learning Architecture}
-The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map. In both of our models we learn local structure representations in form of a dictionary. This dictionary is composed of patches representing the edge structures, t- junctions, crossovers, parallel lines and other commonly occuring local patterns. To these patches is associated their ground truth segmentations. At prediction time, we then approximately decompose each patch as a linear combinaton of dictionary elements.To compute the final segmentation of the patch, each atom of the dictionary element in the linear combination is replaced by its segmentation.\\
+The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map. In both of our models we learn local structure representations in form of a dictionary. This dictionary is composed of patches representing the edge structures, t- junctions, crossovers, parallel lines and other commonly occurring local patterns. To these patches is associated their ground truth segmentations. At prediction time, we then approximately decompose each patch as a linear combination of dictionary elements.To compute the final segmentation of the patch, each atom of the dictionary element in the linear combination is replaced by its segmentation.\\
 
 An example of the learning model is shown in figure \ref{fig:trainmodel}
 Both of the models presented in the section, learn this dictionary for predicting the ground truth map.
 Before we delve into our models, we list the common pre processing operations on the input data.
- \begin{figure}
- 	\centering	
- 	\includegraphics[width=0.8\textwidth]{trainmodel.png}
- 	\caption{Training architecture for our learning model.}
- 	\label{fig:trainmodel}		
- \end{figure}
+\begin{figure}
+	\centering	
+	\includegraphics[width=0.8\textwidth]{trainmodel.png}
+	\caption{Training architecture for our learning model.}
+	\label{fig:trainmodel}		
+\end{figure}
 \subsubsection{Preprocessing}
-For our task we have explored some of the preprocessing steps including patch normalization, contrasts streching and local contrast normalization. For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
+For our task we have explored some of the preprocessing steps including patch normalization, contrasts stretching and local contrast normalization. For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Cluster Learning}
-In this model we find common local structures within the data using clustering. Image patches are clustered to find a common set of locally appearing structures within the image. As we know the ground truth annotations associated to each image patch, we find the segmenation maps for our clustered structures by associating each segmentation image patch to its corresponding cluster. In this way we learn a dictionary in the form of \{image patch : segmentation\} which is then used to find segmentation map for new patches. This method is inspired in part by work of \citep{lim2013sketch} where they learn commonly occuring structures by clustering on annotated segmentation patches.\\
-We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure shows an exaple of learnt dictionary on drive dataset.
+In this model we find common local structures within the data using clustering. Image patches are clustered to find a common set of locally appearing structures within the image. As we know the ground truth annotations associated to each image patch, we find the segmentation maps for our clustered structures by associating each segmentation image patch to its corresponding cluster. In this way we learn a dictionary in the form of \{image patch : segmentation\} which is then used to find segmentation map for new patches. This method is inspired in part by work of \citep{lim2013sketch} where they learn commonly occurring structures by clustering on annotated segmentation patches.\\
+We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure shows an example of learnt dictionary on drive dataset.
 
 In the next section we describe in detail the implementation of learning and prediction steps of our algorithm.
 
@@ -92,7 +92,7 @@ In the next section we describe in detail the implementation of learning and pre
 
 The training procedure for our method requires learning clusters within the input patches. Training is performed on the patches drawn from the input images $I_1$,$I_2$,...$I_n$ and corresponding segmentation images $S_1$,$S_2$,...$S_n$. 
 
-From the training images, we compute a random subset of m patches of fixed size $\sqrt{n}$ x $\sqrt{n}$ and their corresponding annotation as computed from the segmentation images. This subset of patches is used to learn a representative dictionary of patches representing the locally occuring structurein the image and the associated segmentation maps. Let us denote a patch as $x_i$ and its corresponding segmentation map patch as $y_i$. Then the new trainig set can be represented as:
+From the training images, we compute a random subset of m patches of fixed size $\sqrt{n}$ x $\sqrt{n}$ and their corresponding annotation as computed from the segmentation images. This subset of patches is used to learn a representative dictionary of patches representing the locally occurring structurein the image and the associated segmentation maps. Let us denote a patch as $x_i$ and its corresponding segmentation map patch as $y_i$. Then the new training set can be represented as:
 
 $$
 X = \{x_1,x_2,....,x_n\}
@@ -101,13 +101,13 @@ $$
 Y = \{y_1,y_2,....,y_n\}
 $$
 \\
-In the next step we find 'k' clusters within the patches in X usin K-Means clustering as explained in \ref{sec:kmeans}. Let the 'k' learnt cluster be denoted as $C = \{C_1,C_2,...,C_k\} $ where the clusters then can be represented by their cluster centroids $c_1, c_2,..., c_k$. A cluster with 'm' patches then can be represented as
+In the next step we find 'k' clusters within the patches in X using K-Means clustering as explained in \ref{sec:kmeans}. Let the 'k' learnt cluster be denoted as $C = \{C_1,C_2,...,C_k\} $ where the clusters then can be represented by their cluster centroids $c_1, c_2,..., c_k$. A cluster with 'm' patches then can be represented as
 
 $$
 C_k = \{x^k_1,x^k_2,....,x^k_m\}
 $$
 
-Now, since we know the annotation $y_i$ for each training patch $x_i$, the image patches in each cluster can be repalced with their corresponding annotation patches to obtain a group of segmentation cluster where each such cluster can be represented as:
+Now, since we know the annotation $y_i$ for each training patch $x_i$, the image patches in each cluster can be replaced with their corresponding annotation patches to obtain a group of segmentation cluster where each such cluster can be represented as:
 $$
 SC_k = \{y^k_1,y^k_2,....,y^k_m\}
 $$
@@ -135,33 +135,33 @@ An example of a learned dictionary over image patches on DRIVE dataset is showin
 		\caption{Segmentation maps for learned clusters.}
 		\label{fig:gtclusters}
 	\end{subfigure}
-	\caption[Local structures learned using clustering and their segmenations maps]{The image on the left shows the local structures appearing in the images. We can see a mix of straight lines at different orientations and other complex structures. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
+	\caption[Local structures learned using clustering and their segmentation maps]{The image on the left shows the local structures appearing in the images. We can see a mix of straight lines at different orientations and other complex structures. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
 	\label{fig:cb-cls}
 \end{figure}
 
 \subsection{Prediction}
-At test time, to predict the segmenation map for an image, we start by extracting dense patches centered at all pixel in the image. For each extracted patch its cluster membership is predicted using the already trained clustering model. The cluster labels are then matched in the dictionary to obtain the respective segmentation map for the patch.Output image is reconstructed from the patch annotations by averaging. 
+At test time, to predict the segmentation map for an image, we start by extracting dense patches centered at all pixel in the image. For each extracted patch its cluster membership is predicted using the already trained clustering model. The cluster labels are then matched in the dictionary to obtain the respective segmentation map for the patch.Output image is reconstructed from the patch annotations by averaging. 
 
 \subsection{Algorithm}
 The entire learning algorithm than can be summarized in following steps:
 \begin{enumerate}
-\item Extract a set of random Image-Segmentation patches of size m x m from the training images.
-\item Train a K-Means clustering model on the input image patches and learn k clusters on the input.
-\item Compute the ground truth patch for each cluster by averaging the ground truth annotations for each patch belonging to a cluster. 
-\item Construct a dictionary of Cluster and annotations.
+	\item Extract a set of random Image-Segmentation patches of size m x m from the training images.
+	\item Train a K-Means clustering model on the input image patches and learn k clusters on the input.
+	\item Compute the ground truth patch for each cluster by averaging the ground truth annotations for each patch belonging to a cluster. 
+	\item Construct a dictionary of Cluster and annotations.
 \end{enumerate}
 
 
 \section{Dictionary Learning}
 The model is based on learning an overcomplete dictionary over the training data. We aim to learn a good dictionary which can represent our data as a sparse linear combination of the dictionary atoms.
-This method is similar to our previous method where also we learn a dictionary represent the local structures withing the data. The mathematical reasoning behind is that, a signal ( in our case an image) can be represented as a combination of a small number of basic structures, like edges and lines.
+This method is similar to our previous method where also we learn a dictionary represent the local structures within the data. The mathematical reasoning behind is that, a signal ( in our case an image) can be represented as a combination of a small number of basic structures, like edges and lines.
 It is also easy to obtain the segmentation maps for such basic atoms. In our method, for each such image patch, denoted as dictionary atoms, we find a corresponding segmentation label patch from the given segmentation map for the image.\\
 
 For example, given an overcomplete dictionary of atoms D $\in$ $R^{m,k}$, with k columns as the learnt image atoms, we can reconstruct a given image patch x $\in$ $R^m$ as a linear combination of atoms in D. More formally, we learn a sparse code $\alpha$ over D to represent x as
 
 $$ x \approx D \alpha $$  
 
-This is very similar to our cluster based methdo. The learnt cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$.This constraint forces our data point to be represented by only one cluster.
+This is very similar to our cluster based method. The learnt cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$.This constraint forces our data point to be represented by only one cluster.
 
 The advantage of the dictionary learning method is that it can represent complex structures like t-junctions and crossover regions much more accurately as a combination of various atoms. In the following section we describe the implementation of the learning model.
 
@@ -173,7 +173,7 @@ $$
 $$
 Y = \{y_1,y_2,....,y_n\}
 $$
-where X is composed of image patches and Y the corresponding label patches. Each image patch can be representated as a vector by concatenating each of the pixel values. So given, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$ ,the dataset can than be represent as matrices 
+where X is composed of image patches and Y the corresponding label patches. Each image patch can be represented as a vector by concatenating each of the pixel values. So given, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$ ,the dataset can than be represent as matrices 
 X,Y $\in$ $R^{m,n}$. Each row in the matrix denotes a patch or image atom.\\
 
 We learn an overcomplete dictionary D of basis atoms from the image patches using the dictionary learning methods as described in section \ref{sec:dlsparse}. The aim is to learn a dictionary D with k atoms which can best represent $x_i$ using linear combination of a few atoms $d_k$ of the learnt dictionary.
@@ -197,13 +197,13 @@ So we learn two dictionaries, D of image patches and L consisting of label patch
 	%
 	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{dict_gt}
-		\caption{Dictionary L, consisting of computed segmentatiom maps for atoms in D}
+		\caption{Dictionary L, consisting of computed segmentation maps for atoms in D}
 		\label{fig:dictgt}
 	\end{subfigure}
 	\caption[Dictionary of image atoms and segmentations]{The image on the left shows the learnt representative atoms on raw image patches. Most of the atoms depict simple structures like lines and edges. The vessels are in black. The image on the right depicts the corresponding vessels. Vessel pixels are in white and the background in black.}
 	\label{fig:dl-cls}
 \end{figure}
-
+\clearpage
 \subsection{Prediction}
 At the test time, given an image I, dense patches can be computed and the image can be represented as a matrix I $\in$ R, where each row represents a patch of size n x n. We then compute a sparse decomposition of I over dictionary D represented by a sparse code $\alpha$ such that:
 $$
@@ -218,47 +218,50 @@ where $\alpha$ is the sparse code computed over dictionary D and L is the label 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Datasets}
-For testing the performance of our algorithm , we train and test our system on the following publically available datasets. In this section we describe the characteristics of these datsets
+For testing the performance of our algorithm , we train and test our system on the following publicly available datasets. In this section we describe the characteristics of these datasets
 
 \subsection{DRIVE}
-The Digital Retinal Images for Vessel Extraction (DRIVE) dataset consists of 40 color retinal images randomly selected from diabetic retinopathy screening program for 400 diabetic patients.Each of these images in dataset are JPEG compressed and have a dimensions of 768 x 584 pixels captured at a resolution on bits per pixel. The images are captures with a 45degree field of view (FOV).
-Of the 40 images in the datset, 7 show sign of diabetic retinopathy , while the remaining 33 do not consist of any pathology. Each image is provided with a corresponding mask delineating the FOV.\\
+The Digital Retinal Images for Vessel Extraction (DRIVE) dataset \cite{drivedataset} consists of 40 color retinal images randomly selected from diabetic retinopathy screening program for 400 diabetic patients.Each of these images in dataset are JPEG compressed and have a dimensions of 768 x 584 pixels captured at a resolution on bits per pixel. The images are captured with a 45degree field of view (FOV).
+Of the 40 images in the dataset, 7 show sign of diabetic retinopathy , while the remaining 33 do not consist of any pathology. Each image is provided with a corresponding mask delineating the FOV.\\
 
-The dataset is divided is provided with divisions in terms of training and testing set, with each set consisting of 20 images. Each of the 40 images have been manually segmented by human observers trained by an experienced optamologist. For the training set, single ground truth segmentation of the vessels is provided. The test set is provided with two ground truth segmentations, of which the first one is used as gold standard and the other is used to compare the performance with an independent human observer.\\
-
+The dataset is provided with divisions in terms of training and testing set, with each set consisting of 20 images. Each of the 40 images have been manually segmented by human observers trained by an experienced ophthalmologist. For the training set, single ground truth segmentation of the vessels is provided. The test set is provided with two ground truth segmentations, of which the first one is used as gold standard and the other is used to compare the performance with an independent human observer.\\
+\clearpage
 \subsection{STARE}
-The STARE dataset consists of 20 images with blood vessel segmentations, out of which 10 show signs of pathology. The images have been capture with a FOV of 35degrees at 8 bit per pixel resolution, with dimesnsions of each image as 605 x 700 pixels. The dataset consists of segmentation provided by two human observers. In our experiements, we consider the segmentations provided by the first observer as ground truth.\\
+The STARE dataset \cite{hoover2000locating,hoover2003locating} consists of 20 images with blood vessel segmentations, out of which 10 show signs of pathology. The images have been capture with a FOV of 35degrees at 8 bit per pixel resolution, with dimensions of each image as 605 x 700 pixels. The dataset consists of segmentation provided by two human observers. In our experiments, we consider the segmentations provided by the first observer as ground truth.\\
 
-For the experiements, the dataset is randomly divided into training and test sets each consisting of 10images.
+For the experiments, the dataset is randomly divided into training and test sets each consisting of 10images.
 
 \subsection{HRF}
-he High Resolution Fundus (HRF) image databse consists of 45 images of which 15 images come from healthy patients , 15 from patients with diabetic retinopathy and 15 of glacumatous patients. The images were captured with a FOV of 60degrees, at a high resolution of 24bits per pixel. The size of each image is 3504 x 2336 pixels and stored with JPEG compression. \\
+he High Resolution Fundus (HRF) image database \cite{odstrcilik2013retinal} consists of 45 images of which 15 images come from healthy patients , 15 from patients with diabetic retinopathy and 15 of glacumatous patients. The images were captured with a FOV of 60degrees, at a high resolution of 24bits per pixel. The size of each image is 3504 x 2336 pixels and stored with JPEG compression. \\
 
-Each image is provided a manual segmentation of vessesl as segmented by three independent human observers trained by experienced optahmologists.The dataset also provides a corresponging mask image of each image delineating the FOV.
+Each image is provided a manual segmentation of vessels as segmented by three independent human observers trained by experienced optahmologists.The dataset also provides a corresponding mask image of each image delineating the FOV.
 
 \subsection{ARIA}
-The ARIA dataset consists of three groups of images. One of the group consists of 92 images with age-related macular degeneration, the other with 59 images from diabetic patients and the last group with 61 images from a control group.\\
+The ARIA dataset \cite{farnell2008enhancement,zheng2012automated} consists of three groups of images. One of the group consists of 92 images with age-related macular degeneration, the other with 59 images from diabetic patients and the last group with 61 images from a control group.\\
 
-The images are captures with a 50degree FOV, stored in uncompressed TIFF format, with a resolution of 8bits oer pixel. Each image has dimensions of 768 x 576 pixels. The dataset provides with blood vessel segmentation images as manually segmented by experts and a corresponding mask delinating the FOV region.
-
-
+The images are captures with a 50degree FOV, stored in uncompressed TIFF format, with a resolution of 8bits oer pixel. Each image has dimensions of 768 x 576 pixels. The dataset provides with blood vessel segmentation images as manually segmented by experts and a corresponding mask delineating the FOV region.
+\clearpage
+\subsection{CHASEDB1}
+The CHASEDB1 dataset \cite{fraz2012ensemble} consist of 28 images captured at 30degree FOV with a resolution of 1280 x 960 pixels.The dataset consists of two images per patient(one for each eye) captured for 14 children. 
 
 \begin{table}
-\caption{Summary of Datasets}
-\centering
-\label{table:datasets}
-\begin{tabular}{c c c }
-\toprule
-{Datasets} & {FOV} &{\# of Images}  \\ \hline
-
-DRIVE & 45 & 20+20 \\
-
-STARE& 30 & 20  \\
-
-HRF & 60 & 45  \\
-
-ARIA & 50 & 212 \\
-
-\bottomrule
-\end{tabular}
+	\caption{Summary of Datasets}
+	\centering
+	\label{table:datasets}
+	\begin{tabular}{c c c }
+		\toprule
+		{Datasets} & {FOV} &{\# of Images}  \\ \hline
+		
+		DRIVE & 45 & 20+20 \\
+		
+		STARE& 30 & 20  \\
+		
+		HRF & 60 & 45  \\
+		
+		ARIA & 50 & 212 \\
+		
+		CHASEDB1 & 30 & 28\\
+		
+		\bottomrule
+	\end{tabular}
 \end{table}
