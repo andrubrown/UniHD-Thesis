@@ -39,7 +39,7 @@ For a complete assessment of our segmentation model, we perform various experime
 We test the performance of both our models.  	
 
 \section{Vessel Segmentation Assessment}
-The models proposed by us have set of input parameters, which have to be determined to have the best performance of the models. We first start by explaining the parameters and the effect they have on our models.\\
+The proposed models have some input parameters, which need to be evaluated to have the best performance on the models. We start by exploring the various parameters and discuss their effect on our model.\\
 \begin{figure}
 	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{psize/p10.png}
@@ -140,12 +140,25 @@ The Precision recall curve and receiver operation characteristics for our soluti
 		\caption{ROC Curve}
 		\label{fig:bestworse}
 	\end{subfigure}
-	\caption[ROC curve comparing the best and worse case on DRIVE setl]{ROC curve comparing the best and worse case on DRIVE dataset.}
+	\caption[ROC curve comparing the best and worse case on DRIVE set]{ROC curve comparing the best and worse case on DRIVE dataset.}
 	\label{fig:bestroc}
 \end{figure}
-
+\clearpage
+A comparison of our model with other methods in literature is shown in figure \ref{fig:compareall}
 As we can see, that our cluster learning model has a decent performance and performs better then the structure forests model(SE) proposed by \citep{dollar2013structured}. Also it has a comparable performance to the dictionary learning(DL) based model proposed by \citep{rigamonti2013learning}  and the linear filter model(CS) proposed by \cite{rigamonti2012accurate}.\\
 
+\begin{figure}
+	\centering
+	
+	\begin{subfigure}[b]{0.75\textwidth}
+		\includegraphics[width=\textwidth]{compareall.png}
+		\caption{ROC Curve}
+		\label{fig:com}
+	\end{subfigure}
+	\caption[Results on DRIVE dataset]{We compare our model by testing it on the DRIVE dataset. Results are shown for some of the state-of-art methods in literature. SE is the structured forest model by \citet{dollar2013structured},DL is the dictionary leaned filter model by \citet{rigamonti2013learning}, CS is the linear filter model by \citet{rigamonti2012accurate}, N4 is the CNN-kNN model by \citet{ganin2014n},MICCAI is the method proposed by \citet{becker2013supervised}}
+	\label{fig:compareall}
+
+\end{figure}
 We then compare the best case and worst case in our model.For the best case the AUC is 0.97 and for the worst case the AUC is 0.94. The best case and worst case segmentations are shown in Figure \ref{fig:bestcase} and figure \ref{fig:worstcase} respectively. Note that the images are not thresholded. The threshold for false positive rate (FPR) of 0.05 is 0.72 as shown in Figure \ref{fig:bestroc} We observe that for the best case scenario, the segmentation is better the near the optic nerve. In case of worst case scenario, we get a very poor segmentation near the optic nerve region.\\
 
 We also compare our model on the stare dataset. As there is no division of dataset provided, to asses the performance of our algorithm we randomly divide the dataset into training and test set with equal number of images. For the stare set we obtain a decent performance with an AUC of 0.96 as shown in figure \ref{fig:stare}
