@@ -1,4 +1,8 @@
 \beamer@endinputifotherversion {3.33pt}
-\beamer@sectionintoc {1}{First Section}{3}{0}{1}
-\beamer@subsectionintoc {1}{1}{Subsection Example}{3}{0}{1}
-\beamer@sectionintoc {2}{Second Section}{7}{0}{2}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Objective}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Challenges}{5}{0}{1}
+\beamer@sectionintoc {2}{Literature Review}{7}{0}{2}
+\beamer@sectionintoc {3}{Framework}{17}{0}{3}
+\beamer@sectionintoc {4}{Models}{20}{0}{4}
+\beamer@subsectionintoc {4}{1}{Clustering Model}{20}{0}{4}
