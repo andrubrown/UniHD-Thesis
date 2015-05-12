@@ -6,12 +6,12 @@
 \else
 \graphicspath{{Chapter3/Figs/Vector/}{Chapter3/Figs/}}
 \fi
-In this chapter we present the basic framework of our vessel segmentation method. We start by setting up the various notations used throughout the chapter and give an overview about how the framework is applied.Next we discuss the two different models applied in the framework.This forms the core of this thesis and represents the major work done. At last we mention the various datasets utilized to test our models. In the next chapter we experimentally evaluate the models.\\
+In this chapter we present the basic framework of our vessel segmentation method. We start by setting up the various notations used throughout the chapter and give an overview about how the framework is applied. Next we discuss the two different models applied in the framework. This forms the core of this thesis and represents the major work done. At last we mention the various datasets utilized to test our models. In the next chapter we experimentally evaluate the models.\\
 \section{Vessel segmentation Framework}
 We start by defining the basic notations and methods. The input to our vessel segmentation framework is a training set composed of fundus images and their corresponding segmentation or label maps. The collection of fundus images is represented by $\bar{I} = (I^{(1)},I^{(2)}...., I^{(n)} )$  and their corresponding ground truth segmentation maps as $\bar{S} = (S^{(1)},S^{(2)}...., S^{(n)} )$. Each given image is of size M x N.
-For simplicity, in the rest of the section a we would refer an image as I and its segmentation map S. We also assume that the image I is a single channel image.\\
+For simplicity, in the rest of the section a we would refer an image as I and its segmentation map as S. We also assume that the image I is a single channel image.\\
 
-We can represent an image as a collection of overlapping patches computed around every pixel take at center. A patch is of size $\sqrt{n}$ x $\sqrt{n}$ unless otherwise noted. We represent a patch centered at location (x ,y) as $p_{x,y}$, and patches for I and S can be represented as $Ip_{x,y}$ and $Sp_{x,y}$ respectively. For simplicity we would refer the pixels of patch as ${p}_i$ for i =[1...n], where 'i' is the pixel location. A patch can also be represented as a vector , obtained by concatenating the image patch values.\\
+We can represent an image as a collection of overlapping patches computed around every pixel take at center. A patch is of size $\sqrt{n}$ x $\sqrt{n}$ unless otherwise noted. We represent a patch centered at location (x ,y) as $p_{x,y}$, and patches for I and S can be represented as $Ip_{x,y}$ and $Sp_{x,y}$ respectively. For simplicity we would refer the pixels of patch as ${p}_i$ for i =[1...n], where 'i' is the pixel location. A patch can also be represented as a vector, obtained by concatenating the image patch values.\\
 
 We then represent our dataset with each image in terms of their patches as:
 
@@ -60,16 +60,15 @@ Fig~\ref{fig:fundus example} shows an example of fundus image on the left and th
 	\label{fig:fundus example}
 \end{figure}
 
-The aim of our thesis is to learn a function F which maps the image to its segmentation as, $ F: I \rightarrow S $, i.e, we want to learn a function to segment the vessel in a given fundus image. Inspired by the work of \cite{mnih2012learning,lim2013sketch} we approach the problem of predicting segmentation maps in a  patch based framework. In this patch level method, to predict the segmentation map for an image I, we decompose the image into overlapping patches and predict the segmentation maps for individual patches. in a patch by patch fashion. The image and the segmentation map after decomposition can be represented as in Equation \ref{eq:dataset}.Here 'I' denotes the fundus image and 'S' its segmentation map.//
+The aim of our thesis is to learn a function F which maps the image to its segmentation as, $ F: I \rightarrow S $, i.e, we want to learn a function to segment the vessel in a given fundus image. Inspired by the work of \cite{mnih2012learning, lim2013sketch} we approach the problem of predicting segmentation maps in a  patch based framework. In this patch level method, to predict the segmentation map for an image I, we decompose the image into overlapping patches and predict the segmentation maps for individual patches in a patch by patch fashion. The image and the segmentation map after decomposition can be represented as in Equation \ref{eq:dataset}. Here 'I' denotes the fundus image and 'S' its segmentation map. \\
 
-At the test time, we compute the patches for a given image and the mapping fucntion F is the used to predict the segmentation map for all the test patches.Finally,the output segmentation patches are combined by averaging ,resulting in an output segmented image.As the patches are computed in an overlapping way, to each pixel several segmentation patches are added during reconstruction phase. More precisely, each pixel is composed of N pixel values from N nearby patches.\\
+At the test time, we compute the patches for a given imaget and the mapping function F is then used to predict the segmentation map for all the test patches. Finally, the output segmentation patches are combined by averaging, resulting in an output segmented image. As the patches are computed in an overlapping way, to each pixel several segmentation patches are added during reconstruction phase. More precisely, each pixel is composed of N pixel values from N nearby patches.\\
 
 \subsection{Learning Architecture}
-The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map. In both of our models we learn local structure representations in form of a dictionary. This dictionary is composed of patches representing the edge structures, t- junctions, crossovers, parallel lines and other commonly occurring local patterns. To these patches is associated their ground truth segmentations. At prediction time, we then approximately decompose each patch as a linear combination of dictionary elements.To compute the final segmentation of the patch, each atom of the dictionary element in the linear combination is replaced by its segmentation.\\
+The major part of our work is to learn an effective mapping function F, to map the fundus image to its segmentation map. In both of our models we learn local structure representations in form of a dictionary. This dictionary is composed of patches representing the edge structures, T- junctions, crossovers, parallel lines and other commonly occurring local patterns. To these patches is associated their ground truth segmentations. At prediction time, we then approximately decompose each patch as a linear combination of dictionary elements. To compute the final segmentation of the patch, each atom of the dictionary element in the linear combination is replaced by its segmentation.\\
 
-An example of the learning model is shown in figure \ref{fig:trainmodel}
-Both of the models presented in the section, learn this dictionary for predicting the ground truth map.
-Before we delve into our models, we list the common pre processing operations on the input data.
+An example of the learning model is shown in figure \ref{fig:trainmodel}. Both of the models presented in the section, learn this dictionary for predicting the ground truth map.
+Before we delve into our models, we list the common preprocessing operations on the input data.
 \begin{figure}
 	\centering	
 	\includegraphics[width=0.8\textwidth]{trainmodel.png}
@@ -77,14 +76,14 @@ Before we delve into our models, we list the common pre processing operations on
 	\label{fig:trainmodel}		
 \end{figure}
 \subsubsection{Preprocessing}
-For our task we have explored some of the preprocessing steps including patch normalization, contrasts stretching and local contrast normalization. For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
+For our task we have explored some of the preprocessing steps including patch normalization, contrast stretching and local contrast normalization. For all the experiments, we normalize each input patch by subtracting the patch mean and dividing by the standard deviation per patch. Also, all the input patches are vectorized before being fed to the predictor.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Cluster Learning}
-In this model we find common local structures within the data using clustering. Image patches are clustered to find a common set of locally appearing structures within the image. As we know the ground truth annotations associated to each image patch, we find the segmentation maps for our clustered structures by associating each segmentation image patch to its corresponding cluster. In this way we learn a dictionary in the form of \{image patch : segmentation\} which is then used to find segmentation map for new patches. This method is inspired in part by work of \citep{lim2013sketch} where they learn commonly occurring structures by clustering on annotated segmentation patches.\\
-We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure shows an example of learned dictionary on drive dataset.
+In this model we find common local structures within the data using clustering. Image patches are clustered to find a common set of locally appearing structures within the image. As we know the ground truth annotations associated to each image patch, we find the segmentation maps for our clustered structures by associating each segmentation image patch to its corresponding cluster. In this way we learn a dictionary in the form of \{image patch : segmentation\} which is then used to find segmentation map for new patches. This method is inspired in part by work of \citet{lim2013sketch} where they learn commonly occurring structures by clustering on annotated segmentation patches.\\
+We call our method as 'Cluster Based - Common Local Structures(CB-CLS)'. Figure \ref{fig:cb-cls} shows an example of learned dictionary on drive dataset.
 
 In the next section we describe in detail the implementation of learning and prediction steps of our algorithm.
 
@@ -140,7 +139,7 @@ An example of a learned dictionary over image patches on DRIVE dataset is showin
 \end{figure}
 
 \subsection{Prediction}
-At test time, to predict the segmentation map for an image, we start by extracting dense patches centered at all pixel in the image. For each extracted patch its cluster membership is predicted using the already trained clustering model. The cluster labels are then matched in the dictionary to obtain the respective segmentation map for the patch.Output image is reconstructed from the patch annotations by averaging. 
+At test time, to predict the segmentation map for an image, we start by extracting dense patches centered at all pixel in the image. For each extracted patch its cluster membership is predicted using the already trained clustering model. The cluster labels are then matched in the dictionary to obtain the respective segmentation map for the patch. Output image is reconstructed from the patch annotations by averaging. 
 
 \subsection{Algorithm}
 The entire learning algorithm than can be summarized in following steps:
@@ -154,14 +153,14 @@ The entire learning algorithm than can be summarized in following steps:
 
 \section{Dictionary Learning}
 The model is based on learning an over-complete dictionary over the training data. We aim to learn a good dictionary which can represent our data as a sparse linear combination of the dictionary atoms.
-This method is similar to our previous method where also we learn a dictionary represent the local structures within the data. The mathematical reasoning behind is that, a signal ( in our case an image) can be represented as a combination of a small number of basic structures, like edges and lines.
+This method is similar to our previous method where also we learn a dictionary which represents the local structures within the data. The mathematical reasoning behind is that, a signal ( in our case an image) can be represented as a combination of a small number of basic structures, like edges and lines.
 It is also easy to obtain the segmentation maps for such basic atoms. In our method, for each such image patch, denoted as dictionary atoms, we find a corresponding segmentation label patch from the given segmentation map for the image.\\
 
 For example, given an over complete dictionary of atoms D $\in$ $R^{m,k}$, with k columns as the learned image atoms, we can reconstruct a given image patch x $\in$ $R^m$ as a linear combination of atoms in D. More formally, we learn a sparse code $\alpha$ over D to represent x as
 
 $$ x \approx D \alpha $$  
 
-This is very similar to our cluster based method. The learned cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$.This constraint forces our data point to be represented by only one cluster.
+This is very similar to our cluster based method. The learned cluster centers can be considered as the dictionary with the cluster centers at dictionary atoms. And each point within a cluster can be represented as a linear combination of clusters centers with coefficients $\alpha$, constrained as ${\lVert \alpha \rVert}_0$. This constraint forces our data point to be represented by only one cluster.
 
 The advantage of the dictionary learning method is that it can represent complex structures like t-junctions and crossover regions much more accurately as a combination of various atoms.
 As the local structures are learned in dictionaries, we call our method as 'Common Local Structures in Learned Dictionaries(CLS-LD)'
@@ -175,7 +174,7 @@ $$
 $$
 Y = \{y_1,y_2,....,y_n\}
 $$
-where X is composed of image patches and Y the corresponding label patches. Each image patch can be represented as a vector by concatenating each of the pixel values. So given, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$ ,the dataset can than be represent as matrices 
+where X is composed of image patches and Y the corresponding label patches. Each image patch can be represented as a vector by concatenating each of the pixel values. So given, 'm' patches of size $\sqrt{n}$ x $\sqrt{n}$, the dataset can than be represent as matrices 
 X,Y $\in$ $R^{m,n}$. Each row in the matrix denotes a patch or image atom.\\
 
 We learn an over complete dictionary D of basis atoms from the image patches using the dictionary learning methods as described in section \ref{sec:dlsparse}. The aim is to learn a dictionary D with k atoms which can best represent $x_i$ using linear combination of a few atoms $d_k$ of the learned dictionary.
@@ -220,28 +219,23 @@ where $\alpha$ is the sparse code computed over dictionary D and L is the label 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Datasets}
-For testing the performance of our algorithm , we train and test our system on the following publicly available datasets. In this section we describe the characteristics of these datasets
+For testing the performance of our algorithm, we train and test our system on the following publicly available datasets. In this section we describe the characteristics of these datasets
 
 \subsection{DRIVE}
-The Digital Retinal Images for Vessel Extraction (DRIVE) dataset \cite{drivedataset} consists of 40 color retinal images randomly selected from diabetic retinopathy screening program for 400 diabetic patients.Each of these images in dataset are JPEG compressed and have a dimensions of 768 x 584 pixels captured at a resolution on bits per pixel. The images are captured with a 45degree field of view (FOV).
-Of the 40 images in the dataset, 7 show sign of diabetic retinopathy , while the remaining 33 do not consist of any pathology. Each image is provided with a corresponding mask delineating the FOV.\\
+The Digital Retinal Images for Vessel Extraction (DRIVE) dataset \cite{drivedataset} consists of 40 color retinal images randomly selected from diabetic retinopathy screening program for 400 diabetic patients. Each of these images in dataset are JPEG compressed and have a dimensions of 768 x 584 pixels captured at a resolution on bits per pixel. The images are captured with a 45degree field of view (FOV).
+Of the 40 images in the dataset, 7 show sign of diabetic retinopathy, while the remaining 33 do not consist of any pathology. Each image is provided with a corresponding mask delineating the FOV.\\
 
 The dataset is provided with divisions in terms of training and testing set, with each set consisting of 20 images. Each of the 40 images have been manually segmented by human observers trained by an experienced ophthalmologist. For the training set, single ground truth segmentation of the vessels is provided. The test set is provided with two ground truth segmentations, of which the first one is used as gold standard and the other is used to compare the performance with an independent human observer.\\
 \clearpage
 \subsection{STARE}
 The STARE dataset \cite{hoover2000locating,hoover2003locating} consists of 20 images with blood vessel segmentations, out of which 10 show signs of pathology. The images have been capture with a FOV of 35degrees at 8 bit per pixel resolution, with dimensions of each image as 605 x 700 pixels. The dataset consists of segmentation provided by two human observers. In our experiments, we consider the segmentations provided by the first observer as ground truth.\\
 
-For the experiments, the dataset is randomly divided into training and test sets each consisting of 10images.
-
-\subsection{HRF}
-he High Resolution Fundus (HRF) image database \cite{odstrcilik2013retinal} consists of 45 images of which 15 images come from healthy patients , 15 from patients with diabetic retinopathy and 15 of glacumatous patients. The images were captured with a FOV of 60degrees, at a high resolution of 24bits per pixel. The size of each image is 3504 x 2336 pixels and stored with JPEG compression. \\
-
-Each image is provided a manual segmentation of vessels as segmented by three independent human observers trained by experienced optahmologists.The dataset also provides a corresponding mask image of each image delineating the FOV.
+For the experiments, the dataset is randomly divided into training and test sets each consisting of 10 images.
 
 \subsection{ARIA}
-The ARIA dataset \cite{farnell2008enhancement,zheng2012automated} consists of three groups of images. One of the group consists of 92 images with age-related macular degeneration, the other with 59 images from diabetic patients and the last group with 61 images from a control group.\\
+The ARIA dataset \cite{farnell2008enhancement, zheng2012automated} consists of three groups of images. One of the group consists of 92 images with age-related macular degeneration, the other with 59 images from diabetic patients and the last group with 61 images from a control group.\\
 
-The images are captures with a 50degree FOV, stored in uncompressed TIFF format, with a resolution of 8bits oer pixel. Each image has dimensions of 768 x 576 pixels. The dataset provides with blood vessel segmentation images as manually segmented by experts and a corresponding mask delineating the FOV region.
+The images are captures with a 50degree FOV, stored in uncompressed TIFF format, with a resolution of 8bits per pixel. Each image has dimensions of 768 x 576 pixels. The dataset provides with blood vessel segmentation images as manually segmented by experts and a corresponding mask delineating the FOV region.
 \clearpage
 \subsection{CHASEDB1}
 The CHASEDB1 dataset \cite{fraz2012ensemble} consist of 28 images captured at 30degree FOV with a resolution of 1280 x 960 pixels.The dataset consists of two images per patient(one for each eye) captured for 14 children. 
@@ -257,9 +251,7 @@ The CHASEDB1 dataset \cite{fraz2012ensemble} consist of 28 images captured at 30
 		DRIVE & 45 & 20+20 \\
 		
 		STARE& 30 & 20  \\
-		
-		HRF & 60 & 45  \\
-		
+	
 		ARIA & 50 & 212 \\
 		
 		CHASEDB1 & 30 & 28\\
